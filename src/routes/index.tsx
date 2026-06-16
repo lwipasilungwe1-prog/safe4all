@@ -1030,16 +1030,23 @@ function Index() {
       document.body.classList.remove("menu-open");
     };
     const toggleMenu = () => {
-      const isOpen = hamburger?.classList.toggle("open");
-      mobileMenu?.classList.toggle("open", isOpen);
-      scrim?.classList.toggle("open", isOpen);
-      hamburger?.setAttribute("aria-expanded", isOpen ? "true" : "false");
-      mobileMenu?.setAttribute("aria-hidden", isOpen ? "false" : "true");
-      document.body.classList.toggle("menu-open", !!isOpen);
+      const willOpen = !hamburger?.classList.contains("open");
+      hamburger?.classList.toggle("open", willOpen);
+      mobileMenu?.classList.toggle("open", willOpen);
+      scrim?.classList.toggle("open", willOpen);
+      hamburger?.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      mobileMenu?.setAttribute("aria-hidden", willOpen ? "false" : "true");
+      document.body.classList.toggle("menu-open", willOpen);
     };
     hamburger?.addEventListener("click", toggleMenu);
     scrim?.addEventListener("click", closeMenu);
-    mobileMenu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+    const mobileLinks = mobileMenu?.querySelectorAll("a") ?? [];
+    mobileLinks.forEach((a) => a.addEventListener("click", closeMenu));
+    const mobileListeners = [
+      { el: hamburger, type: "click", fn: toggleMenu },
+      { el: scrim, type: "click", fn: closeMenu },
+      ...Array.from(mobileLinks).map((a) => ({ el: a as HTMLElement, type: "click", fn: closeMenu })),
+    ] as const;
 
 
 
@@ -1062,6 +1069,7 @@ function Index() {
     return () => {
       handlers.forEach(({ a, fn }) => a.removeEventListener("click", fn));
       window.removeEventListener("scroll", onScroll);
+      mobileListeners.forEach(({ el, type, fn }) => el?.removeEventListener(type, fn));
       io.disconnect();
     };
   }, []);
