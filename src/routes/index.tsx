@@ -415,6 +415,31 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
 .store-badge span{display:flex;flex-direction:column;line-height:1.05;text-align:left}
 .store-badge small{font-size:0.62rem;font-weight:400;opacity:0.85;letter-spacing:0.04em}
 .store-badge strong{font-size:0.98rem;font-weight:700;letter-spacing:0.01em;margin-top:1px}
+
+/* SCREENSHOT GALLERY */
+.phones-row{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:1.5rem;flex-wrap:wrap;
+  max-width:1000px;margin:0 auto 3rem;width:100%
+}
+.phone-shot{
+  flex:1 1 220px;max-width:280px;
+  border-radius:32px;overflow:hidden;
+  filter:drop-shadow(0 22px 40px rgba(192,57,15,0.28));
+  transition:transform 0.4s cubic-bezier(.34,1.56,.64,1)
+}
+.phone-shot img{display:block;width:100%;height:auto;border-radius:32px}
+.phone-shot.mid{transform:translateY(-30px) scale(1.06)}
+.phone-shot:hover{transform:translateY(-44px) scale(1.08)}
+.phone-shot.mid:hover{transform:translateY(-50px) scale(1.12)}
+@media(max-width:768px){
+  .phone-shot.mid{transform:none}
+  .phone-shot.mid:hover{transform:translateY(-8px) scale(1.02)}
+}
+h1 em,h2 em{font-style:normal;color:var(--red-bright)}
+.eyebrow,.tagline,.chip,.q-text{font-style:normal !important}
+
 `;
 
 const PAGE_HTML = String.raw`<!-- NAV -->
@@ -436,9 +461,12 @@ const PAGE_HTML = String.raw`<!-- NAV -->
 
   <p class="hero-sub">BEKA is a secure, multilingual platform connecting survivors of gender-based violence to responders, shelters, and legal aid — instantly and discreetly.</p>
 
-  <!-- HERO VISUAL — illustrated scene SVG -->
-  <div class="hero-scene">
-    <svg width="100%" viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" aria-label="BEKA platform overview showing survivor, response, and admin roles connected">
+  <!-- HERO VISUAL — real app screenshots -->
+  <div class="phones-row">
+    <div class="phone-shot"><img src="/__l5e/assets-v1/e46e71c2-4623-4883-8725-776fd5fefd65/beka-dashboard.png" alt="BEKA app dashboard screenshot" width="280" height="280" loading="eager"/></div>
+    <div class="phone-shot mid"><img src="/__l5e/assets-v1/1b8f8da6-1c94-4895-8a08-ee3ecdf52c83/beka-panic.png" alt="BEKA app panic button screenshot" width="280" height="280" loading="eager"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/5e91ed27-3ffe-46e6-9613-cef54b2e15e0/beka-location.png" alt="BEKA app live location screenshot" width="280" height="280" loading="lazy"/></div>
+  </div>
 
       <!-- bg -->
       <rect width="780" height="260" fill="rgba(192,57,15,0.05)" rx="20"/>
