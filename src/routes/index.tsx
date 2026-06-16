@@ -519,8 +519,21 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <li><a href="#features">Features</a></li>
     <li><a href="#who">Who it's for</a></li>
   </ul>
-  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn">Open App ↗</a>
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn nav-btn-desktop">Open App ↗</a>
+  <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
+  <a href="#how">How it works</a>
+  <a href="#features">Features</a>
+  <a href="#who">Who it's for</a>
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn">Open App ↗</a>
+</div>
+<div id="mobile-scrim" class="mobile-scrim"></div>
+
 
 <!-- HERO -->
 <section class="hero">
