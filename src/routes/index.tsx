@@ -386,18 +386,56 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
 @media(max-width:900px){
   .steps-row{grid-template-columns:1fr 1fr;gap:1.5rem}
   .steps-row::before{display:none}
+  .two-col{grid-template-columns:1fr;gap:3rem}
 }
 @media(max-width:768px){
-  nav{padding:0 1.2rem}
+  nav{padding:0.4rem 0.4rem 0.4rem 1.2rem;gap:0.8rem;width:calc(100% - 1.5rem);max-width:440px}
   nav ul{display:none}
-  .section{padding:4rem 1.25rem}
-  .hero{padding:6rem 1.25rem 4rem}
-  .two-col{grid-template-columns:1fr;gap:3.5rem}
+  .nav-btn{padding:0.5rem 1rem;font-size:0.78rem}
+  .logo{font-size:1.2rem}
+  .section{padding:4rem 1.1rem}
+  .hero{padding:6rem 1.1rem 4rem}
   .channels{grid-template-columns:1fr}
-  .numbers-strip{grid-template-columns:1fr}
+  .numbers-strip{grid-template-columns:1fr;gap:1rem}
   .footer-wrap{grid-template-columns:1fr;gap:2rem}
   .foot-bottom{flex-direction:column;text-align:center}
-  .steps-row{grid-template-columns:1fr 1fr}
+  .steps-row{grid-template-columns:1fr 1fr;gap:2rem}
+  .grid-3,.who-grid{grid-template-columns:1fr;gap:1rem}
+  .incident-grid{grid-template-columns:1fr 1fr}
+  .quote-wrap,.final-cta{padding:4.5rem 1.1rem}
+}
+@media(max-width:500px){
+  h1{font-size:clamp(2.4rem,11vw,3.4rem);line-height:1.05}
+  .hero-sub{font-size:0.95rem;margin-bottom:2rem}
+  .eyebrow{font-size:0.82rem;text-align:center;padding:0 0.5rem;gap:0.4rem}
+  .eyebrow::before,.eyebrow::after{display:none}
+  .orb-wrap{width:220px;height:220px;margin-bottom:2rem}
+  .ring:nth-child(1){width:120px;height:120px}
+  .ring:nth-child(2){width:170px;height:170px}
+  .ring:nth-child(3){width:220px;height:220px}
+  .orb{width:104px;height:104px}
+  .orb-icon{width:32px;height:32px}
+  .phones-row{gap:0.7rem;margin-bottom:2rem}
+  .phone-shot{flex:1 1 130px;max-width:180px;border-radius:22px}
+  .phone-shot img{border-radius:22px}
+  .phone-shot.mid{transform:none}
+  .phone-shot:hover,.phone-shot.mid:hover{transform:translateY(-6px) scale(1.02)}
+  .cta-btn{padding:0.85rem 1.8rem;font-size:0.95rem;margin-bottom:2rem}
+  .taglines{gap:0.3rem 1rem}
+  .tagline{font-size:0.74rem}
+  .store-badges{gap:0.5rem}
+  .store-badge{padding:0.5rem 0.85rem}
+  .store-badge strong{font-size:0.85rem}
+  .num-big{font-size:2.6rem}
+  .num-card{padding:1.8rem 1.2rem}
+  .who-card{padding:1.8rem 1.4rem}
+  .card{padding:1.5rem}
+  .step-icon-wrap{width:86px;height:86px;margin-bottom:1rem}
+  h2{font-size:clamp(1.8rem,7vw,2.4rem)}
+  .q-text{font-size:1.15rem}
+  .q-mark{font-size:4.5rem}
+  .quote-wrap,.final-cta{padding:4rem 1.1rem}
+  .scroll-hint{display:none}
 }
 
 .store-badges{position:relative;z-index:1;display:inline-flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;margin:0 auto 1.4rem}
