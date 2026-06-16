@@ -944,9 +944,27 @@ function Index() {
       if (nav) nav.style.background = window.scrollY > 50 ? "rgba(255,242,236,0.92)" : "rgba(255,242,236,0.7)";
     };
     window.addEventListener("scroll", onScroll, { passive: true });
+
+    // Scroll reveal
+    const targets = document.querySelectorAll<HTMLElement>(
+      '.section .wrap > *, .card, .who-card, .num-card, .step, .incident-chip, .chip, .ch, .quote-inner, .final-cta > *'
+    );
+    targets.forEach((el, i) => {
+      el.classList.add('reveal');
+      if (i % 3 === 1) el.classList.add('reveal-delay-1');
+      if (i % 3 === 2) el.classList.add('reveal-delay-2');
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach((el) => io.observe(el));
+
     return () => {
       handlers.forEach(({ a, fn }) => a.removeEventListener("click", fn));
       window.removeEventListener("scroll", onScroll);
+      io.disconnect();
     };
   }, []);
 
