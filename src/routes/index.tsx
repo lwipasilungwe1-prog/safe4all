@@ -132,10 +132,9 @@ h1 .highlight-amber{color:var(--amber-bright)}
   transition:transform 0.2s cubic-bezier(.34,1.56,.64,1)
 }
 @keyframes orbpulse{0%,100%{box-shadow:0 0 0 5px rgba(255,85,32,0.16),0 0 55px rgba(255,85,32,0.52),0 0 100px rgba(255,85,32,0.2)}50%{box-shadow:0 0 0 8px rgba(255,85,32,0.22),0 0 75px rgba(255,85,32,0.68),0 0 130px rgba(255,85,32,0.28)}}
-.orb:hover{transform:scale(1.08)}
-.orb:active{transform:scale(0.95)}
-.orb-icon{font-size:2.2rem;line-height:1}
-.orb-text{font-family:var(--ff-display);font-size:0.63rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.9)}
+.orb{cursor:default}
+.orb-icon{width:38px;height:38px;line-height:1}
+.orb-text{font-family:var(--ff-display);font-size:0.63rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.95);margin-top:4px}
 
 .cta-btn{
   position:relative;z-index:1;
