@@ -21,8 +21,8 @@ const PAGE_CSS = String.raw`
   --text:#2a0a04;
   --muted:#7a4a3e;
   --dim:#a8786a;
-  --ff-display:'Playfair Display',Georgia,serif;
-  --ff-body:'Inter',system-ui,sans-serif;
+  --ff-display:'Fredoka One','Fredoka',system-ui,sans-serif;
+  --ff-body:'Fredoka One','Fredoka',system-ui,sans-serif;
   --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px
 }
 html{scroll-behavior:smooth}
@@ -946,7 +946,7 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     </div>
   </div>
   <div class="foot-bottom">
-    <span>© 2025 Safe4All · BEKA GBV Emergency Response</span>
+    <span>© 2026 Safe4All · BEKA GBV Emergency Response</span>
     <span>Built for survivors, responders &amp; communities across Zambia</span>
   </div>
 </footer>`;
@@ -965,7 +965,7 @@ export const Route = createFileRoute("/")({
       { rel: "canonical", href: "/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Inter:wght@300;400;500;600&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fredoka+One&family=Fredoka:wght@400;500;600;700&display=swap" },
     ],
   }),
   component: Index,
