@@ -516,12 +516,12 @@ h1 em{background:linear-gradient(90deg,#ff5520 0%,#ffaa44 50%,#ff5520 100%);back
 .hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-.mobile-menu{position:fixed;top:5.2rem;left:50%;transform:translateX(-50%) translateY(-12px);width:calc(100% - 1.5rem);max-width:440px;z-index:99;background:rgba(255,242,236,0.96);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(192,57,15,0.18);border-radius:22px;box-shadow:0 14px 40px rgba(192,57,15,0.22);padding:1rem;display:none;flex-direction:column;gap:0.35rem;opacity:0;transition:opacity 0.22s ease,transform 0.22s ease}
+.mobile-menu{position:fixed;top:5.2rem;left:50%;transform:translateX(-50%) translateY(-12px);width:calc(100% - 1.5rem);max-width:440px;z-index:99;background:rgba(255,242,236,0.96);backdrop-filter:blur(22px) saturate(1.5);border:1px solid rgba(192,57,15,0.18);border-radius:22px;box-shadow:0 14px 40px rgba(192,57,15,0.22);padding:1rem;display:none;flex-direction:column;gap:0.35rem;opacity:0;transition:opacity 0.22s ease,transform 0.22s ease;outline:none}
 .mobile-menu.open{display:flex;opacity:1;transform:translateX(-50%) translateY(0)}
-.mobile-menu a{padding:0.85rem 1rem;border-radius:14px;font-size:0.95rem;font-weight:500;color:var(--text);text-decoration:none;transition:background 0.18s}
-.mobile-menu a:hover,.mobile-menu a:focus{background:rgba(192,57,15,0.07)}
-.mobile-menu .nav-btn{margin-top:0.4rem;text-align:center;color:#fff}
-.mobile-menu .nav-btn:hover{background:#ff6b38;color:#fff}
+.mobile-menu a{padding:0.85rem 1rem;border-radius:14px;font-size:0.95rem;font-weight:500;color:var(--text);text-decoration:none;transition:background 0.18s;outline-offset:2px}
+.mobile-menu a:hover,.mobile-menu a:focus{background:rgba(192,57,15,0.07);outline:2px solid rgba(192,57,15,0.25)}
+.mobile-menu .nav-btn{margin-top:0.4rem;text-align:center;color:#fff;outline-offset:2px}
+.mobile-menu .nav-btn:hover,.mobile-menu .nav-btn:focus{background:#ff6b38;color:#fff}
 .mobile-scrim{position:fixed;inset:0;background:rgba(42,10,4,0.32);backdrop-filter:blur(2px);z-index:98;opacity:0;pointer-events:none;transition:opacity 0.22s ease}
 .mobile-scrim.open{opacity:1;pointer-events:auto}
 body.menu-open{overflow:hidden}
@@ -541,19 +541,19 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <li><a href="#who">Who it's for</a></li>
   </ul>
   <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn nav-btn-desktop">Open App ↗</a>
-  <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+  <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- MOBILE MENU -->
-<div id="mobile-menu" class="mobile-menu" aria-hidden="true">
-  <a href="#how">How it works</a>
-  <a href="#features">Features</a>
-  <a href="#who">Who it's for</a>
-  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn">Open App ↗</a>
+<div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Main navigation" aria-hidden="true" tabindex="-1">
+  <a href="#how" tabindex="0">How it works</a>
+  <a href="#features" tabindex="0">Features</a>
+  <a href="#who" tabindex="0">Who it's for</a>
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn" tabindex="0">Open App ↗</a>
 </div>
-<div id="mobile-scrim" class="mobile-scrim"></div>
+<div id="mobile-scrim" class="mobile-scrim" aria-hidden="true"></div>
 
 
 <!-- HERO -->
