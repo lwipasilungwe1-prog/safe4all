@@ -1028,7 +1028,7 @@ function Index() {
         mobileMenu.querySelectorAll<HTMLElement>(
           'a[href], button, [tabindex]:not([tabindex="-1"])'
         )
-      ).filter((el) => !el.disabled && !el.getAttribute("aria-hidden"));
+      ).filter((el) => !(el as HTMLButtonElement).disabled && el.getAttribute("aria-hidden") !== "true");
     };
 
     const closeMenu = () => {
