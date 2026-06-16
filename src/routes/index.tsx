@@ -494,9 +494,9 @@ const PAGE_HTML = String.raw`<!-- NAV -->
 
   <!-- HERO VISUAL — real app screenshots -->
   <div class="phones-row">
-    <div class="phone-shot"><img src="/__l5e/assets-v1/e46e71c2-4623-4883-8725-776fd5fefd65/beka-dashboard.png" alt="BEKA app dashboard screenshot" width="280" height="280" loading="eager"/></div>
-    <div class="phone-shot mid"><img src="/__l5e/assets-v1/1b8f8da6-1c94-4895-8a08-ee3ecdf52c83/beka-panic.png" alt="BEKA app panic button screenshot" width="280" height="280" loading="eager"/></div>
-    <div class="phone-shot"><img src="/__l5e/assets-v1/5e91ed27-3ffe-46e6-9613-cef54b2e15e0/beka-location.png" alt="BEKA app live location screenshot" width="280" height="280" loading="lazy"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/25f783f7-de1a-4cb4-8dc0-8f570c8a8e09/app-contacts-form.jpg" alt="BEKA app — add emergency contact screen" loading="eager"/></div>
+    <div class="phone-shot mid"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="eager"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/14d16e1e-8d68-4df8-8f39-436acd455a45/app-settings.jpg" alt="BEKA app — privacy and settings screen" loading="lazy"/></div>
   </div>
 
   <!-- ORB (decorative — non-functional preview) -->
