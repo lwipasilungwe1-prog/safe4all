@@ -468,15 +468,15 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <div class="phone-shot"><img src="/__l5e/assets-v1/5e91ed27-3ffe-46e6-9613-cef54b2e15e0/beka-location.png" alt="BEKA app live location screenshot" width="280" height="280" loading="lazy"/></div>
   </div>
 
-  <!-- ORB -->
-  <div class="orb-wrap">
+  <!-- ORB (decorative — non-functional preview) -->
+  <div class="orb-wrap" aria-hidden="true">
     <div class="ring"></div>
     <div class="ring"></div>
     <div class="ring"></div>
-    <a href="https://safe4all.online" target="_blank" rel="noopener" class="orb" title="Open BEKA">
-      <span class="orb-icon">🆘</span>
+    <div class="orb" role="presentation">
+      <svg class="orb-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
       <span class="orb-text">Help Now</span>
-    </a>
+    </div>
   </div>
 
   <a href="https://safe4all.online" target="_blank" rel="noopener" class="cta-btn">
