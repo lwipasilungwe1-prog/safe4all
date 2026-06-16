@@ -4,10 +4,10 @@ import { useEffect } from "react";
 const PAGE_CSS = String.raw`
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --deep:#fff2ec;
-  --dark:#fbe1d4;
-  --panel:rgba(192,57,15,0.04);
-  --border:rgba(192,57,15,0.16);
+  --deep:#2c3a6e;
+  --dark:#26326a;
+  --panel:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.14);
   --red:#c0390f;
   --red-mid:#d4450f;
   --red-bright:#ff5520;
@@ -18,40 +18,41 @@ const PAGE_CSS = String.raw`
   --blue:#3b82f6;
   --purple:#a855f7;
   --yellow:#fbbf24;
-  --text:#2a0a04;
-  --muted:#7a4a3e;
-  --dim:#a8786a;
+  --text:#ffffff;
+  --muted:#c8cde8;
+  --dim:#8a92bd;
   --ff-display:'Playfair Display',Georgia,serif;
   --ff-body:'Inter',system-ui,sans-serif;
   --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px
 }
 html{scroll-behavior:smooth}
-body{background:var(--deep);color:var(--text);font-family:var(--ff-body);line-height:1.65;overflow-x:hidden}
+body{background:linear-gradient(180deg,#2c3a6e 0%,#3b4d8a 60%,#5a6cb0 100%);background-attachment:fixed;color:var(--text);font-family:var(--ff-body);line-height:1.65;overflow-x:hidden}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:rgba(192,57,15,0.4);border-radius:2px}
 
 /* NAV */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 3rem;height:64px;
-  background:rgba(255,242,236,0.82);backdrop-filter:blur(20px) saturate(1.4);
-  border-bottom:1px solid var(--border);
+  position:fixed;top:1.1rem;left:50%;transform:translateX(-50%);z-index:100;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;
+  padding:0.45rem 0.55rem 0.45rem 2rem;height:56px;
+  background:rgba(255,255,255,0.13);backdrop-filter:blur(22px) saturate(1.5);
+  border:1px solid rgba(255,255,255,0.18);border-radius:50px;
+  box-shadow:0 8px 30px rgba(15,20,55,0.25);
   transition:background 0.3s
 }
-.logo{font-family:var(--ff-display);font-size:1.5rem;font-weight:900;letter-spacing:0.08em;color:var(--text);text-decoration:none}
-.logo span{color:var(--red-bright)}
+.logo{font-family:var(--ff-display);font-style:italic;font-size:1.45rem;font-weight:900;letter-spacing:0.04em;color:#ffffff;text-decoration:none}
+.logo span{color:#ffd7a8}
 nav ul{list-style:none;display:flex;gap:2.5rem}
-nav ul a{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s}
-nav ul a:hover{color:var(--text)}
+nav ul a{color:rgba(255,255,255,0.85);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s}
+nav ul a:hover{color:#fff}
 .nav-btn{
-  background:var(--red-bright);color:#fff;border:none;
+  background:rgba(255,255,255,0.18);color:#fff;border:1px solid rgba(255,255,255,0.25);
   padding:0.55rem 1.4rem;border-radius:50px;font-size:0.85rem;
   font-weight:600;cursor:pointer;text-decoration:none;
-  box-shadow:0 3px 18px rgba(255,85,32,0.45);
+  backdrop-filter:blur(10px);
   transition:all 0.2s
 }
-.nav-btn:hover{background:#ff6b38;transform:translateY(-1px);box-shadow:0 6px 26px rgba(255,85,32,0.58)}
+.nav-btn:hover{background:rgba(255,255,255,0.28);transform:translateY(-1px)}
 
 /* HERO */
 .hero{
@@ -59,10 +60,7 @@ nav ul a:hover{color:var(--text)}
   align-items:center;justify-content:center;
   padding:8rem 2rem 5rem;text-align:center;
   position:relative;overflow:hidden;
-  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(192,57,15,0.28) 0%, transparent 65%),
-             radial-gradient(ellipse 60% 40% at 80% 60%, rgba(245,137,58,0.12) 0%, transparent 55%),
-             radial-gradient(ellipse 50% 40% at 20% 70%, rgba(46,184,122,0.1) 0%, transparent 55%),
-             var(--deep)
+  background:transparent
 }
 /* animated grid */
 .hero::before{
@@ -75,29 +73,29 @@ nav ul a:hover{color:var(--text)}
 
 .eyebrow{
   position:relative;z-index:1;
-  display:inline-flex;align-items:center;gap:0.5rem;
-  font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--red-bright);background:rgba(255,85,32,0.1);
-  border:1px solid rgba(255,85,32,0.28);border-radius:50px;
-  padding:0.35rem 1rem;margin-bottom:2rem
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-family:var(--ff-display);font-style:italic;font-size:1.05rem;
+  color:#b9c1e8;letter-spacing:0.01em;
+  margin-bottom:1.5rem
 }
-.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--red-bright);animation:pulse 2s ease-in-out infinite;display:inline-block}
+.eyebrow::before,.eyebrow::after{content:'—';color:#b9c1e8;opacity:0.7}
+.eyebrow i{display:none}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
 
 h1{
   position:relative;z-index:1;
-  font-family:var(--ff-display);
-  font-size:clamp(2.9rem,7vw,5.4rem);
-  font-weight:900;line-height:1.06;letter-spacing:-0.02em;
-  max-width:820px;margin-bottom:1.5rem;color:var(--text)
+  font-family:var(--ff-display);font-style:italic;
+  font-size:clamp(3.4rem,9vw,7rem);
+  font-weight:700;line-height:1.02;letter-spacing:-0.01em;
+  max-width:900px;margin-bottom:1.5rem;color:#ffffff
 }
-h1 em{font-style:italic;color:var(--red-bright)}
+h1 em{font-style:italic;color:#ffd7a8}
 h1 .highlight-amber{color:var(--amber-bright)}
 
 .hero-sub{
   position:relative;z-index:1;
-  font-size:clamp(1rem,2vw,1.15rem);color:var(--muted);
-  max-width:520px;margin-bottom:3rem;line-height:1.85;font-weight:400
+  font-size:clamp(1rem,2vw,1.2rem);color:rgba(255,255,255,0.85);
+  max-width:560px;margin-bottom:3rem;line-height:1.8;font-weight:300
 }
 
 /* HERO ILLUSTRATION STRIP */
@@ -170,15 +168,15 @@ hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(2
 
 /* SECTIONS */
 .section{padding:6rem 2rem}
-.section.alt{background:var(--dark)}
+.section.alt{background:rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
 .wrap{max-width:1100px;margin:0 auto}
 .section-label{
   display:inline-flex;align-items:center;gap:0.6rem;
   font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--red-bright);margin-bottom:0.9rem
+  color:#ffd7a8;margin-bottom:0.9rem
 }
-.section-label::before{content:'';display:block;width:20px;height:1.5px;background:var(--red-bright);border-radius:2px}
-h2{font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,3rem);font-weight:700;line-height:1.1;color:var(--text);margin-bottom:1rem}
+.section-label::before{content:'';display:block;width:20px;height:1.5px;background:#ffd7a8;border-radius:2px}
+h2{font-family:var(--ff-display);font-style:italic;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;line-height:1.08;color:#ffffff;margin-bottom:1rem}
 .lead{font-size:1rem;color:var(--muted);max-width:480px;line-height:1.85}
 
 /* HOW IT WORKS — horizontal illustrated steps */
@@ -339,7 +337,7 @@ h2{font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,3rem);font-weight:70
 /* QUOTE */
 .quote-wrap{
   padding:6rem 2rem;text-align:center;
-  background:radial-gradient(ellipse 70% 55% at 50% 50%,rgba(192,57,15,0.14) 0%,transparent 65%)
+  background:radial-gradient(ellipse 70% 55% at 50% 50%,rgba(255,215,168,0.12) 0%,transparent 65%)
 }
 .quote-inner{max-width:700px;margin:0 auto}
 .q-mark{font-family:var(--ff-display);font-size:6rem;line-height:0.35;color:rgba(255,85,32,0.25);display:block;margin-bottom:1.8rem}
@@ -350,7 +348,7 @@ h2{font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,3rem);font-weight:70
 /* FINAL CTA */
 .final-cta{
   padding:7rem 2rem;text-align:center;
-  background:var(--dark);border-top:1px solid var(--border);
+  background:rgba(255,255,255,0.04);border-top:1px solid var(--border);
   position:relative;overflow:hidden
 }
 .final-cta::before{
@@ -371,7 +369,7 @@ h2{font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,3rem);font-weight:70
 .app-url svg{width:12px;height:12px}
 
 /* FOOTER */
-footer{background:#f7dccd;border-top:1px solid var(--border);padding:3.5rem 2rem 2.5rem}
+footer{background:rgba(15,20,55,0.55);border-top:1px solid var(--border);padding:3.5rem 2rem 2.5rem}
 .footer-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem}
 .foot-logo{font-family:var(--ff-display);font-size:1.3rem;font-weight:900;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.7rem}
 .foot-logo span{color:var(--red-bright)}
@@ -427,7 +425,7 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <li><a href="#features">Features</a></li>
     <li><a href="#who">Who it's for</a></li>
   </ul>
-  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="nav-btn">Open App ↗</a>
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn">Open App ↗</a>
 </nav>
 
 <!-- HERO -->
@@ -551,13 +549,13 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <div class="ring"></div>
     <div class="ring"></div>
     <div class="ring"></div>
-    <a href="https://beka.base44.app" target="_blank" rel="noopener" class="orb" title="Open BEKA">
+    <a href="https://safe4all.online" target="_blank" rel="noopener" class="orb" title="Open BEKA">
       <span class="orb-icon">🆘</span>
       <span class="orb-text">Help Now</span>
     </a>
   </div>
 
-  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="cta-btn">
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="cta-btn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Get BEKA Free
   </a>
@@ -915,13 +913,13 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     </a>
   </div>
   <br>
-  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="cta-btn" style="position:relative">
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="cta-btn" style="position:relative">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     Open BEKA
   </a>
   <br>
-  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="app-url">
-    beka.base44.app
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="app-url">
+    safe4all.online
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
   </a>
 </section>
@@ -938,11 +936,11 @@ const PAGE_HTML = String.raw`<!-- NAV -->
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
       <a href="#who">Who it's for</a>
-      <a href="https://beka.base44.app" target="_blank" rel="noopener">Open App ↗</a>
+      <a href="https://safe4all.online" target="_blank" rel="noopener">Open App ↗</a>
     </div>
     <div class="foot-col">
       <h4>Access</h4>
-      <a href="https://beka.base44.app" target="_blank" rel="noopener">beka.base44.app</a>
+      <a href="https://safe4all.online" target="_blank" rel="noopener">safe4all.online</a>
       <a href="mailto:support@safe4all.zm">Contact</a>
       <a href="#">Privacy Policy</a>
     </div>
@@ -956,15 +954,18 @@ const PAGE_HTML = String.raw`<!-- NAV -->
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BEKA — Safe4All GBV Emergency Response" },
-      { name: "description", content: "BEKA is a secure, multilingual GBV emergency response platform connecting survivors to responders, shelters, and legal aid across Zambia." },
-      { property: "og:title", content: "BEKA — Safe4All GBV Emergency Response" },
+      { title: "Safe4All — GBV Emergency Response" },
+      { name: "description", content: "Safe4All is a secure, multilingual GBV emergency response platform connecting survivors to responders, shelters, and legal aid across Zambia." },
+      { property: "og:title", content: "Safe4All — GBV Emergency Response" },
       { property: "og:description", content: "Secure, multilingual GBV emergency response across Zambia." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
     ],
     links: [
+      { rel: "canonical", href: "/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Inter:wght@300;400;500;600&display=swap" },
     ],
   }),
   component: Index,
@@ -985,7 +986,7 @@ function Index() {
     });
     const nav = document.getElementById("nav");
     const onScroll = () => {
-      if (nav) nav.style.background = window.scrollY > 50 ? "rgba(255,242,236,0.95)" : "rgba(255,242,236,0.82)";
+      if (nav) nav.style.background = window.scrollY > 50 ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.13)";
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
