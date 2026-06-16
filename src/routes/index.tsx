@@ -439,6 +439,38 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
 h1 em,h2 em{font-style:normal;color:var(--red-bright)}
 .eyebrow,.tagline,.chip,.q-text{font-style:normal !important}
 
+/* PHONE FLOAT */
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes floatyMid{0%,100%{transform:translateY(-30px) scale(1.06)}50%{transform:translateY(-46px) scale(1.06)}}
+.phone-shot{animation:floaty 5.5s ease-in-out infinite}
+.phone-shot:nth-child(1){animation-delay:-1.5s}
+.phone-shot:nth-child(3){animation-delay:-3s}
+.phone-shot.mid{animation:floatyMid 5.5s ease-in-out infinite}
+
+/* HERO GRADIENT TEXT SHEEN */
+h1 em{background:linear-gradient(90deg,#ff5520 0%,#ffaa44 50%,#ff5520 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sheen 4s ease-in-out infinite}
+@keyframes sheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.9s cubic-bezier(.2,.7,.2,1),transform 0.9s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.08s}
+.reveal-delay-2{transition-delay:0.16s}
+.reveal-delay-3{transition-delay:0.24s}
+
+/* CARD SHEEN ON HOVER */
+.card,.who-card,.num-card{position:relative;overflow:hidden}
+.card::after,.who-card::after,.num-card::after{content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,0.35),transparent);transform:skewX(-20deg);transition:left 0.7s ease;pointer-events:none;z-index:1}
+.card:hover::after,.who-card:hover::after,.num-card:hover::after{left:130%}
+.card:hover{transform:translateY(-6px);border-color:rgba(255,85,32,0.4);box-shadow:0 18px 50px rgba(192,57,15,0.18)}
+
+/* ORB ICON GLOW */
+.orb-icon{filter:drop-shadow(0 2px 6px rgba(0,0,0,0.25))}
+
+/* STORE BADGE BOUNCE */
+.store-badge{animation:floaty 4s ease-in-out infinite}
+.store-badge:nth-child(2){animation-delay:-2s}
+
 `;
 
 const PAGE_HTML = String.raw`<!-- NAV -->
