@@ -21,8 +21,8 @@ const PAGE_CSS = String.raw`
   --text:#2a0a04;
   --muted:#7a4a3e;
   --dim:#a8786a;
-  --ff-display:'Playfair Display',Georgia,serif;
-  --ff-body:'Inter',system-ui,sans-serif;
+  --ff-display:'Fredoka One','Fredoka',system-ui,sans-serif;
+  --ff-body:'Fredoka One','Fredoka',system-ui,sans-serif;
   --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px
 }
 html{scroll-behavior:smooth}
@@ -415,6 +415,31 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
 .store-badge span{display:flex;flex-direction:column;line-height:1.05;text-align:left}
 .store-badge small{font-size:0.62rem;font-weight:400;opacity:0.85;letter-spacing:0.04em}
 .store-badge strong{font-size:0.98rem;font-weight:700;letter-spacing:0.01em;margin-top:1px}
+
+/* SCREENSHOT GALLERY */
+.phones-row{
+  position:relative;z-index:1;
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:1.5rem;flex-wrap:wrap;
+  max-width:1000px;margin:0 auto 3rem;width:100%
+}
+.phone-shot{
+  flex:1 1 220px;max-width:280px;
+  border-radius:32px;overflow:hidden;
+  filter:drop-shadow(0 22px 40px rgba(192,57,15,0.28));
+  transition:transform 0.4s cubic-bezier(.34,1.56,.64,1)
+}
+.phone-shot img{display:block;width:100%;height:auto;border-radius:32px}
+.phone-shot.mid{transform:translateY(-30px) scale(1.06)}
+.phone-shot:hover{transform:translateY(-44px) scale(1.08)}
+.phone-shot.mid:hover{transform:translateY(-50px) scale(1.12)}
+@media(max-width:768px){
+  .phone-shot.mid{transform:none}
+  .phone-shot.mid:hover{transform:translateY(-8px) scale(1.02)}
+}
+h1 em,h2 em{font-style:normal;color:var(--red-bright)}
+.eyebrow,.tagline,.chip,.q-text{font-style:normal !important}
+
 `;
 
 const PAGE_HTML = String.raw`<!-- NAV -->
@@ -436,112 +461,11 @@ const PAGE_HTML = String.raw`<!-- NAV -->
 
   <p class="hero-sub">BEKA is a secure, multilingual platform connecting survivors of gender-based violence to responders, shelters, and legal aid — instantly and discreetly.</p>
 
-  <!-- HERO VISUAL — illustrated scene SVG -->
-  <div class="hero-scene">
-    <svg width="100%" viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" aria-label="BEKA platform overview showing survivor, response, and admin roles connected">
-
-      <!-- bg -->
-      <rect width="780" height="260" fill="rgba(192,57,15,0.05)" rx="20"/>
-
-      <!-- left column: survivor phone -->
-      <g>
-        <rect x="50" y="30" width="130" height="200" rx="16" fill="rgba(255,85,32,0.08)" stroke="rgba(255,85,32,0.4)" stroke-width="1.5"/>
-        <!-- phone screen -->
-        <rect x="60" y="50" width="110" height="160" rx="10" fill="rgba(255,85,32,0.06)"/>
-        <!-- camera notch -->
-        <ellipse cx="115" cy="57" rx="12" ry="5" fill="rgba(0,0,0,0.4)"/>
-        <!-- panic button big -->
-        <circle cx="115" cy="125" r="34" fill="rgba(255,85,32,0.15)" stroke="rgba(255,85,32,0.5)" stroke-width="1.5"/>
-        <circle cx="115" cy="125" r="24" fill="#ff5520"/>
-        <text x="115" y="120" text-anchor="middle" font-size="11" fill="white" font-family="system-ui" font-weight="600">SOS</text>
-        <text x="115" y="134" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.85)" font-family="system-ui">PANIC</text>
-        <!-- mini signal bars -->
-        <rect x="75" y="170" width="5" height="10" rx="1" fill="rgba(255,85,32,0.6)"/>
-        <rect x="83" y="165" width="5" height="15" rx="1" fill="rgba(255,85,32,0.7)"/>
-        <rect x="91" y="160" width="5" height="20" rx="1" fill="rgba(255,85,32,0.8)"/>
-        <rect x="99" y="157" width="5" height="23" rx="1" fill="rgba(255,85,32,0.5)"/>
-        <!-- loc pin -->
-        <circle cx="140" cy="166" r="8" fill="rgba(255,85,32,0.2)" stroke="rgba(255,85,32,0.5)" stroke-width="1"/>
-        <text x="140" y="170" text-anchor="middle" font-size="9" fill="#ff5520">📍</text>
-        <!-- label -->
-        <text x="115" y="244" text-anchor="middle" font-size="11" fill="#ff5520" font-family="system-ui" font-weight="600" letter-spacing="1">SURVIVOR</text>
-      </g>
-
-      <!-- arrows flowing right from phone -->
-      <!-- SMS arrow -->
-      <line x1="185" y1="100" x2="285" y2="85" stroke="rgba(255,85,32,0.55)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah)"/>
-      <!-- alert arrow -->
-      <line x1="185" y1="130" x2="285" y2="150" stroke="rgba(61,214,140,0.5)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah2)"/>
-
-      <!-- defs for arrowheads -->
-      <defs>
-        <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(255,85,32,0.8)" stroke-width="1.5" stroke-linecap="round"/>
-        </marker>
-        <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(61,214,140,0.8)" stroke-width="1.5" stroke-linecap="round"/>
-        </marker>
-        <marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(255,170,68,0.8)" stroke-width="1.5" stroke-linecap="round"/>
-        </marker>
-      </defs>
-
-      <!-- label on arrows -->
-      <text x="233" y="82" text-anchor="middle" font-size="9" fill="rgba(255,85,32,0.7)" font-family="system-ui">SMS alert</text>
-      <text x="233" y="160" text-anchor="middle" font-size="9" fill="rgba(61,214,140,0.7)" font-family="system-ui">GPS location</text>
-
-      <!-- middle: BEKA hub -->
-      <g>
-        <circle cx="390" cy="130" r="58" fill="rgba(192,57,15,0.1)" stroke="rgba(255,85,32,0.35)" stroke-width="1.5"/>
-        <circle cx="390" cy="130" r="40" fill="rgba(192,57,15,0.18)" stroke="rgba(255,85,32,0.5)" stroke-width="1"/>
-        <text x="390" y="124" text-anchor="middle" font-size="14" fill="#ff5520" font-family="'Playfair Display',serif" font-weight="900">BEKA</text>
-        <text x="390" y="140" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)" font-family="system-ui" letter-spacing="1.5">PLATFORM</text>
-        <!-- mini icons around hub -->
-        <text x="390" y="98" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.4)">🔒</text>
-      </g>
-
-      <!-- arrows from hub to right -->
-      <line x1="448" y1="107" x2="548" y2="80" stroke="rgba(61,214,140,0.5)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah2)"/>
-      <line x1="448" y1="153" x2="548" y2="168" stroke="rgba(255,170,68,0.5)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah3)"/>
-      <text x="497" y="78" text-anchor="middle" font-size="9" fill="rgba(61,214,140,0.7)" font-family="system-ui">Dispatch</text>
-      <text x="497" y="178" text-anchor="middle" font-size="9" fill="rgba(255,170,68,0.7)" font-family="system-ui">Case file</text>
-
-      <!-- right: responder + admin stack -->
-      <!-- responder card -->
-      <g>
-        <rect x="550" y="30" width="170" height="85" rx="12" fill="rgba(61,214,140,0.07)" stroke="rgba(61,214,140,0.35)" stroke-width="1.2"/>
-        <!-- responder icon -->
-        <circle cx="578" cy="62" r="14" fill="rgba(61,214,140,0.15)" stroke="rgba(61,214,140,0.4)" stroke-width="1"/>
-        <text x="578" y="67" text-anchor="middle" font-size="14">🚔</text>
-        <text x="635" y="53" text-anchor="middle" font-size="11" fill="#3dd68c" font-family="system-ui" font-weight="600">RESPONDER</text>
-        <!-- status dots -->
-        <circle cx="603" cy="78" r="3.5" fill="#3dd68c"/>
-        <text x="613" y="82" font-size="8.5" fill="rgba(255,255,255,0.5)" font-family="system-ui">On-call · VSU</text>
-        <!-- mini map line -->
-        <rect x="560" y="92" width="150" height="1" fill="rgba(61,214,140,0.15)"/>
-        <text x="635" y="106" text-anchor="middle" font-size="8.5" fill="rgba(61,214,140,0.55)" font-family="system-ui">Lusaka · 2.3 km away</text>
-      </g>
-
-      <!-- admin card -->
-      <g>
-        <rect x="550" y="145" width="170" height="85" rx="12" fill="rgba(255,170,68,0.07)" stroke="rgba(255,170,68,0.35)" stroke-width="1.2"/>
-        <circle cx="578" cy="177" r="14" fill="rgba(255,170,68,0.14)" stroke="rgba(255,170,68,0.4)" stroke-width="1"/>
-        <text x="578" y="182" text-anchor="middle" font-size="14">🛡️</text>
-        <text x="635" y="168" text-anchor="middle" font-size="11" fill="#ffaa44" font-family="system-ui" font-weight="600">ADMIN</text>
-        <!-- live bar chart -->
-        <rect x="603" y="190" width="8" height="20" rx="2" fill="rgba(255,170,68,0.4)"/>
-        <rect x="614" y="185" width="8" height="25" rx="2" fill="rgba(255,170,68,0.55)"/>
-        <rect x="625" y="192" width="8" height="18" rx="2" fill="rgba(255,170,68,0.4)"/>
-        <rect x="636" y="183" width="8" height="27" rx="2" fill="rgba(255,170,68,0.65)"/>
-        <rect x="647" y="188" width="8" height="22" rx="2" fill="rgba(255,170,68,0.45)"/>
-        <text x="635" y="222" text-anchor="middle" font-size="8.5" fill="rgba(255,170,68,0.55)" font-family="system-ui">Live alerts dashboard</text>
-      </g>
-
-      <!-- Africa's Talking label at bottom center -->
-      <rect x="300" y="222" width="180" height="24" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-      <text x="390" y="238" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui" letter-spacing="0.5">Powered by Africa's Talking · SMS · WhatsApp</text>
-
-    </svg>
+  <!-- HERO VISUAL — real app screenshots -->
+  <div class="phones-row">
+    <div class="phone-shot"><img src="/__l5e/assets-v1/e46e71c2-4623-4883-8725-776fd5fefd65/beka-dashboard.png" alt="BEKA app dashboard screenshot" width="280" height="280" loading="eager"/></div>
+    <div class="phone-shot mid"><img src="/__l5e/assets-v1/1b8f8da6-1c94-4895-8a08-ee3ecdf52c83/beka-panic.png" alt="BEKA app panic button screenshot" width="280" height="280" loading="eager"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/5e91ed27-3ffe-46e6-9613-cef54b2e15e0/beka-location.png" alt="BEKA app live location screenshot" width="280" height="280" loading="lazy"/></div>
   </div>
 
   <!-- ORB -->
@@ -946,7 +870,7 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     </div>
   </div>
   <div class="foot-bottom">
-    <span>© 2025 Safe4All · BEKA GBV Emergency Response</span>
+    <span>© 2026 Safe4All · BEKA GBV Emergency Response</span>
     <span>Built for survivors, responders &amp; communities across Zambia</span>
   </div>
 </footer>`;
@@ -965,7 +889,7 @@ export const Route = createFileRoute("/")({
       { rel: "canonical", href: "/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Inter:wght@300;400;500;600&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fredoka+One&family=Fredoka:wght@400;500;600;700&display=swap" },
     ],
   }),
   component: Index,
