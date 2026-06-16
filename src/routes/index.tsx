@@ -1,29 +1,1003 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+
+const PAGE_CSS = String.raw`
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep:#fff2ec;
+  --dark:#fbe1d4;
+  --panel:rgba(192,57,15,0.04);
+  --border:rgba(192,57,15,0.16);
+  --red:#c0390f;
+  --red-mid:#d4450f;
+  --red-bright:#ff5520;
+  --amber:#f5893a;
+  --amber-bright:#ffaa44;
+  --green:#2eb87a;
+  --green-bright:#3dd68c;
+  --blue:#3b82f6;
+  --purple:#a855f7;
+  --yellow:#fbbf24;
+  --text:#2a0a04;
+  --muted:#7a4a3e;
+  --dim:#a8786a;
+  --ff-display:'Playfair Display',Georgia,serif;
+  --ff-body:'Inter',system-ui,sans-serif;
+  --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px
+}
+html{scroll-behavior:smooth}
+body{background:var(--deep);color:var(--text);font-family:var(--ff-body);line-height:1.65;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(192,57,15,0.4);border-radius:2px}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem;height:64px;
+  background:rgba(255,242,236,0.82);backdrop-filter:blur(20px) saturate(1.4);
+  border-bottom:1px solid var(--border);
+  transition:background 0.3s
+}
+.logo{font-family:var(--ff-display);font-size:1.5rem;font-weight:900;letter-spacing:0.08em;color:var(--text);text-decoration:none}
+.logo span{color:var(--red-bright)}
+nav ul{list-style:none;display:flex;gap:2.5rem}
+nav ul a{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s}
+nav ul a:hover{color:var(--text)}
+.nav-btn{
+  background:var(--red-bright);color:#fff;border:none;
+  padding:0.55rem 1.4rem;border-radius:50px;font-size:0.85rem;
+  font-weight:600;cursor:pointer;text-decoration:none;
+  box-shadow:0 3px 18px rgba(255,85,32,0.45);
+  transition:all 0.2s
+}
+.nav-btn:hover{background:#ff6b38;transform:translateY(-1px);box-shadow:0 6px 26px rgba(255,85,32,0.58)}
+
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:8rem 2rem 5rem;text-align:center;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(192,57,15,0.28) 0%, transparent 65%),
+             radial-gradient(ellipse 60% 40% at 80% 60%, rgba(245,137,58,0.12) 0%, transparent 55%),
+             radial-gradient(ellipse 50% 40% at 20% 70%, rgba(46,184,122,0.1) 0%, transparent 55%),
+             var(--deep)
+}
+/* animated grid */
+.hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(192,57,15,1) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(192,57,15,1) 1px,transparent 1px);
+  background-size:60px 60px;opacity:0.04;
+  mask-image:radial-gradient(ellipse 80% 70% at 50% 35%,#000 0%,transparent 70%)
+}
+
+.eyebrow{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--red-bright);background:rgba(255,85,32,0.1);
+  border:1px solid rgba(255,85,32,0.28);border-radius:50px;
+  padding:0.35rem 1rem;margin-bottom:2rem
+}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--red-bright);animation:pulse 2s ease-in-out infinite;display:inline-block}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
+
+h1{
+  position:relative;z-index:1;
+  font-family:var(--ff-display);
+  font-size:clamp(2.9rem,7vw,5.4rem);
+  font-weight:900;line-height:1.06;letter-spacing:-0.02em;
+  max-width:820px;margin-bottom:1.5rem;color:var(--text)
+}
+h1 em{font-style:italic;color:var(--red-bright)}
+h1 .highlight-amber{color:var(--amber-bright)}
+
+.hero-sub{
+  position:relative;z-index:1;
+  font-size:clamp(1rem,2vw,1.15rem);color:var(--muted);
+  max-width:520px;margin-bottom:3rem;line-height:1.85;font-weight:400
+}
+
+/* HERO ILLUSTRATION STRIP */
+.hero-scene{
+  position:relative;z-index:1;
+  width:100%;max-width:780px;
+  margin-bottom:3rem;
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.03)
+}
+
+/* ORB */
+.orb-wrap{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;
+  width:280px;height:280px;margin-bottom:3rem
+}
+.ring{position:absolute;border-radius:50%;border:1px solid rgba(255,85,32,0.25);animation:ripple 3.5s ease-out infinite}
+.ring:nth-child(1){width:150px;height:150px;animation-delay:0s}
+.ring:nth-child(2){width:212px;height:212px;animation-delay:0.9s}
+.ring:nth-child(3){width:278px;height:278px;animation-delay:1.8s}
+@keyframes ripple{0%{opacity:.8;transform:scale(.88)}100%{opacity:0;transform:scale(1.06)}}
+
+.orb{
+  position:relative;z-index:2;
+  width:124px;height:124px;border-radius:50%;
+  background:conic-gradient(from 200deg,#ff6b38,#d4450f,#ff5520,#ff8c55,#ff5520,#d4450f);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;text-decoration:none;
+  box-shadow:0 0 0 5px rgba(255,85,32,0.16),0 0 55px rgba(255,85,32,0.52),0 0 100px rgba(255,85,32,0.2);
+  animation:orbpulse 3s ease-in-out infinite;
+  transition:transform 0.2s cubic-bezier(.34,1.56,.64,1)
+}
+@keyframes orbpulse{0%,100%{box-shadow:0 0 0 5px rgba(255,85,32,0.16),0 0 55px rgba(255,85,32,0.52),0 0 100px rgba(255,85,32,0.2)}50%{box-shadow:0 0 0 8px rgba(255,85,32,0.22),0 0 75px rgba(255,85,32,0.68),0 0 130px rgba(255,85,32,0.28)}}
+.orb:hover{transform:scale(1.08)}
+.orb:active{transform:scale(0.95)}
+.orb-icon{font-size:2.2rem;line-height:1}
+.orb-text{font-family:var(--ff-display);font-size:0.63rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.9)}
+
+.cta-btn{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:0.6rem;
+  background:var(--red-bright);color:#fff;
+  padding:0.95rem 2.4rem;border-radius:50px;
+  font-size:1rem;font-weight:600;text-decoration:none;
+  box-shadow:0 4px 26px rgba(255,85,32,0.48);
+  transition:all 0.2s;margin-bottom:3rem
+}
+.cta-btn:hover{background:#ff6b38;transform:translateY(-2px);box-shadow:0 8px 36px rgba(255,85,32,0.62)}
+.cta-btn:active{transform:translateY(0)}
+.cta-btn svg{width:17px;height:17px}
+
+.taglines{position:relative;z-index:1;display:flex;gap:0.4rem 1.5rem;flex-wrap:wrap;justify-content:center;max-width:600px}
+.tagline{font-size:0.78rem;color:var(--dim);font-style:italic}
+.tagline b{color:var(--amber);font-style:normal;font-weight:700;margin-right:0.3rem;font-size:0.7rem;letter-spacing:0.04em}
+
+.scroll-hint{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.4rem;
+  color:var(--dim);font-size:0.67rem;letter-spacing:0.14em;text-transform:uppercase;
+  animation:bob 2.8s ease-in-out infinite
+}
+.scroll-hint-bar{width:1px;height:34px;background:linear-gradient(to bottom,rgba(255,85,32,0.6),transparent)}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* DIVIDER */
+hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(255,85,32,0.2) 35%,rgba(255,85,32,0.2) 65%,transparent)}
+
+/* SECTIONS */
+.section{padding:6rem 2rem}
+.section.alt{background:var(--dark)}
+.wrap{max-width:1100px;margin:0 auto}
+.section-label{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--red-bright);margin-bottom:0.9rem
+}
+.section-label::before{content:'';display:block;width:20px;height:1.5px;background:var(--red-bright);border-radius:2px}
+h2{font-family:var(--ff-display);font-size:clamp(2rem,4.5vw,3rem);font-weight:700;line-height:1.1;color:var(--text);margin-bottom:1rem}
+.lead{font-size:1rem;color:var(--muted);max-width:480px;line-height:1.85}
+
+/* HOW IT WORKS — horizontal illustrated steps */
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:3.5rem;position:relative}
+.steps-row::before{
+  content:'';position:absolute;top:52px;left:12.5%;right:12.5%;height:2px;
+  background:linear-gradient(to right,var(--red-bright),var(--amber),var(--green-bright));
+  z-index:0;border-radius:2px
+}
+.step{
+  background:transparent;
+  padding:0 1rem 2rem;position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;text-align:center
+}
+.step-icon-wrap{
+  width:106px;height:106px;border-radius:50%;
+  background:var(--dark);border:2px solid rgba(192,57,15,0.18);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.4rem;position:relative;overflow:hidden
+}
+.step-icon-wrap svg{width:100%;height:100%}
+.step-t{font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:0.45rem}
+.step-d{font-size:0.82rem;color:var(--muted);line-height:1.68}
+.step-num{
+  position:absolute;top:-4px;right:-4px;
+  width:26px;height:26px;border-radius:50%;
+  font-size:0.68rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--dark)
+}
+
+/* FEATURE CARDS */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.25rem;margin-top:3.5rem}
+.card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:1.9rem;
+  display:flex;flex-direction:column;
+  transition:border-color 0.22s,transform 0.2s,box-shadow 0.2s;
+  position:relative;overflow:hidden
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.card.c-red::before{background:linear-gradient(to right,var(--red-bright),transparent 70%)}
+.card.c-green::before{background:linear-gradient(to right,var(--green-bright),transparent 70%)}
+.card.c-amber::before{background:linear-gradient(to right,var(--amber-bright),transparent 70%)}
+.card.c-blue::before{background:linear-gradient(to right,var(--blue),transparent 70%)}
+.card.c-purple::before{background:linear-gradient(to right,var(--purple),transparent 70%)}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.16);box-shadow:0 16px 48px rgba(0,0,0,0.4)}
+.icon-box{
+  width:48px;height:48px;border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem
+}
+.icon-box svg{width:22px;height:22px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card.c-red .icon-box{background:rgba(255,85,32,0.14);border:1px solid rgba(255,85,32,0.22)}
+.card.c-red .icon-box svg{stroke:var(--red-bright)}
+.card.c-green .icon-box{background:rgba(61,214,140,0.12);border:1px solid rgba(61,214,140,0.2)}
+.card.c-green .icon-box svg{stroke:var(--green-bright)}
+.card.c-amber .icon-box{background:rgba(255,170,68,0.12);border:1px solid rgba(255,170,68,0.2)}
+.card.c-amber .icon-box svg{stroke:var(--amber-bright)}
+.card.c-blue .icon-box{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.2)}
+.card.c-blue .icon-box svg{stroke:var(--blue)}
+.card.c-purple .icon-box{background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.2)}
+.card.c-purple .icon-box svg{stroke:var(--purple)}
+.card-t{font-size:0.98rem;font-weight:600;color:var(--text);margin-bottom:0.5rem}
+.card-d{font-size:0.86rem;color:var(--muted);line-height:1.72;flex:1}
+.tag{
+  display:inline-block;margin-top:1rem;
+  font-size:0.66rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  border-radius:50px;padding:0.2rem 0.65rem;
+  border:1px solid
+}
+.tag-red{color:var(--red-bright);background:rgba(255,85,32,0.1);border-color:rgba(255,85,32,0.22)}
+.tag-green{color:var(--green-bright);background:rgba(61,214,140,0.1);border-color:rgba(61,214,140,0.22)}
+.tag-amber{color:var(--amber-bright);background:rgba(255,170,68,0.1);border-color:rgba(255,170,68,0.22)}
+.tag-blue{color:var(--blue);background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.22)}
+.tag-purple{color:var(--purple);background:rgba(168,85,247,0.1);border-color:rgba(168,85,247,0.22)}
+
+/* WHO IT'S FOR */
+.who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;margin-top:3.5rem}
+.who-card{
+  border-radius:var(--r-xl);padding:2.2rem 2rem;border:1px solid var(--border);
+  display:flex;flex-direction:column;gap:0.55rem;
+  position:relative;overflow:hidden;
+  transition:border-color 0.22s,transform 0.2s
+}
+.who-card:hover{transform:translateY(-4px)}
+.who-card-art{position:absolute;top:0;right:0;width:160px;height:160px;opacity:0.12;pointer-events:none}
+.who-card.s{background:linear-gradient(135deg,rgba(255,85,32,0.06) 0%,rgba(0,0,0,0) 60%);border-color:rgba(255,85,32,0.28)}
+.who-card.s:hover{border-color:rgba(255,85,32,0.6)}
+.who-card.r{background:linear-gradient(135deg,rgba(61,214,140,0.06) 0%,rgba(0,0,0,0) 60%);border-color:rgba(61,214,140,0.25)}
+.who-card.r:hover{border-color:rgba(61,214,140,0.55)}
+.who-card.a{background:linear-gradient(135deg,rgba(255,170,68,0.06) 0%,rgba(0,0,0,0) 60%);border-color:rgba(255,170,68,0.25)}
+.who-card.a:hover{border-color:rgba(255,170,68,0.55)}
+.badge{
+  font-size:0.66rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  padding:0.26rem 0.7rem;border-radius:50px;align-self:flex-start;border:1px solid;margin-bottom:0.3rem
+}
+.s .badge{color:var(--red-bright);background:rgba(255,85,32,0.12);border-color:rgba(255,85,32,0.25)}
+.r .badge{color:var(--green-bright);background:rgba(61,214,140,0.1);border-color:rgba(61,214,140,0.22)}
+.a .badge{color:var(--amber-bright);background:rgba(255,170,68,0.1);border-color:rgba(255,170,68,0.22)}
+.who-title{font-family:var(--ff-display);font-size:1.4rem;font-weight:700;color:var(--text)}
+.who-desc{font-size:0.87rem;color:var(--muted);line-height:1.72}
+.who-list{list-style:none;margin-top:0.6rem;display:flex;flex-direction:column;gap:0.45rem}
+.who-list li{font-size:0.82rem;color:var(--muted);padding-left:1.3rem;position:relative;line-height:1.5}
+.who-list li::before{content:'→';position:absolute;left:0;font-size:0.72rem;top:1px}
+.s .who-list li::before{color:var(--red-bright)}
+.r .who-list li::before{color:var(--green-bright)}
+.a .who-list li::before{color:var(--amber-bright)}
+
+/* LANGUAGES + CHANNELS */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.chips{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:1.8rem}
+.chip{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:50px;padding:0.42rem 1rem;
+  font-size:0.84rem;color:var(--muted);font-style:italic;
+  transition:border-color 0.2s,color 0.2s
+}
+.chip:hover{border-color:rgba(255,85,32,0.4);color:var(--text)}
+.chip strong{color:var(--red-bright);font-style:normal;font-weight:700;font-size:0.7rem;margin-right:0.35rem;letter-spacing:0.06em}
+.channels{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;margin-top:1.8rem}
+.ch{
+  display:flex;align-items:center;gap:0.6rem;
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:0.7rem 1rem;
+  font-size:0.84rem;color:var(--muted);
+  transition:border-color 0.2s
+}
+.ch:hover{border-color:rgba(255,85,32,0.35)}
+.ch svg{width:16px;height:16px;stroke:var(--red-bright);fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+.ch span{color:var(--text);font-weight:500;font-size:0.84rem}
+
+.incident-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:0.65rem;margin-top:2.5rem}
+.incident-chip{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:0.75rem 1rem;
+  font-size:0.8rem;color:var(--muted);line-height:1.4;
+  transition:border-color 0.2s,color 0.2s
+}
+.incident-chip:hover{border-color:rgba(255,85,32,0.4);color:var(--text)}
+
+/* IMPACT NUMBERS */
+.numbers-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+  margin-top:3.5rem;text-align:center
+}
+.num-card{
+  padding:2.5rem 1.5rem;border-radius:var(--r-xl);
+  border:1px solid var(--border);background:var(--panel);
+  transition:border-color 0.22s,transform 0.2s
+}
+.num-card:hover{border-color:rgba(255,85,32,0.35);transform:translateY(-3px)}
+.num-big{font-family:var(--ff-display);font-size:3.2rem;font-weight:900;line-height:1;margin-bottom:0.45rem}
+.num-big.r{color:var(--red-bright)}
+.num-big.g{color:var(--green-bright)}
+.num-big.a{color:var(--amber-bright)}
+.num-label{font-size:0.85rem;color:var(--muted);line-height:1.6}
+
+/* QUOTE */
+.quote-wrap{
+  padding:6rem 2rem;text-align:center;
+  background:radial-gradient(ellipse 70% 55% at 50% 50%,rgba(192,57,15,0.14) 0%,transparent 65%)
+}
+.quote-inner{max-width:700px;margin:0 auto}
+.q-mark{font-family:var(--ff-display);font-size:6rem;line-height:0.35;color:rgba(255,85,32,0.25);display:block;margin-bottom:1.8rem}
+.q-rule{width:42px;height:2px;background:var(--red-bright);border-radius:2px;margin:0 auto 1.4rem}
+.q-text{font-family:var(--ff-display);font-size:clamp(1.25rem,3.5vw,1.95rem);font-weight:700;font-style:italic;line-height:1.48;color:var(--text);margin-bottom:1.4rem}
+.q-attr{font-size:0.76rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase}
+
+/* FINAL CTA */
+.final-cta{
+  padding:7rem 2rem;text-align:center;
+  background:var(--dark);border-top:1px solid var(--border);
+  position:relative;overflow:hidden
+}
+.final-cta::before{
+  content:'';position:absolute;top:-140px;left:50%;transform:translateX(-50%);
+  width:800px;height:600px;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(255,85,32,0.18) 0%,transparent 62%)
+}
+.final-cta .section-label{justify-content:center}
+.final-cta h2{position:relative;font-size:clamp(2rem,5vw,3.4rem);max-width:600px;margin:0 auto 1.1rem}
+.final-cta p{position:relative;color:var(--muted);font-size:1rem;max-width:440px;margin:0 auto 2.8rem;line-height:1.8}
+.app-url{
+  position:relative;display:inline-flex;align-items:center;gap:0.35rem;
+  color:var(--red-bright);text-decoration:none;font-size:0.85rem;font-weight:600;margin-top:1.5rem;
+  border-bottom:1.5px solid rgba(255,85,32,0.3);padding-bottom:2px;
+  transition:all 0.2s
+}
+.app-url:hover{color:var(--amber-bright);border-color:var(--amber-bright)}
+.app-url svg{width:12px;height:12px}
+
+/* FOOTER */
+footer{background:#f7dccd;border-top:1px solid var(--border);padding:3.5rem 2rem 2.5rem}
+.footer-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem}
+.foot-logo{font-family:var(--ff-display);font-size:1.3rem;font-weight:900;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.7rem}
+.foot-logo span{color:var(--red-bright)}
+.foot-desc{font-size:0.8rem;color:var(--dim);line-height:1.68;max-width:220px}
+.foot-col h4{font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.foot-col a{display:block;color:var(--dim);text-decoration:none;font-size:0.82rem;margin-bottom:0.55rem;transition:color 0.2s}
+.foot-col a:hover{color:var(--text)}
+.foot-bottom{
+  max-width:1100px;margin:2.5rem auto 0;
+  border-top:1px solid var(--border);padding-top:1.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.76rem;color:var(--dim);flex-wrap:wrap;gap:0.5rem
+}
+
+@media(max-width:900px){
+  .steps-row{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .steps-row::before{display:none}
+}
+@media(max-width:768px){
+  nav{padding:0 1.2rem}
+  nav ul{display:none}
+  .section{padding:4rem 1.25rem}
+  .hero{padding:6rem 1.25rem 4rem}
+  .two-col{grid-template-columns:1fr;gap:3.5rem}
+  .channels{grid-template-columns:1fr}
+  .numbers-strip{grid-template-columns:1fr}
+  .footer-wrap{grid-template-columns:1fr;gap:2rem}
+  .foot-bottom{flex-direction:column;text-align:center}
+  .steps-row{grid-template-columns:1fr 1fr}
+}
+
+.store-badges{position:relative;z-index:1;display:inline-flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;margin:0 auto 1.4rem}
+.store-badge{
+  display:inline-flex;align-items:center;gap:0.7rem;
+  background:#1a0805;color:#fff;text-decoration:none;
+  padding:0.6rem 1.15rem;border-radius:12px;
+  border:1px solid rgba(0,0,0,0.6);
+  box-shadow:0 6px 22px rgba(42,10,4,0.18);
+  transition:transform 0.2s, box-shadow 0.2s;
+}
+.store-badge:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(42,10,4,0.28)}
+.store-badge svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
+.store-badge span{display:flex;flex-direction:column;line-height:1.05;text-align:left}
+.store-badge small{font-size:0.62rem;font-weight:400;opacity:0.85;letter-spacing:0.04em}
+.store-badge strong{font-size:0.98rem;font-weight:700;letter-spacing:0.01em;margin-top:1px}
+`;
+
+const PAGE_HTML = String.raw`<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">BE<span>KA</span></a>
+  <ul>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#who">Who it's for</a></li>
+  </ul>
+  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="nav-btn">Open App ↗</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow"><i></i> Safe4All · GBV Emergency Response · Zambia</div>
+
+  <h1>When seconds matter,<br><em>one tap</em> calls for help.</h1>
+
+  <p class="hero-sub">BEKA is a secure, multilingual platform connecting survivors of gender-based violence to responders, shelters, and legal aid — instantly and discreetly.</p>
+
+  <!-- HERO VISUAL — illustrated scene SVG -->
+  <div class="hero-scene">
+    <svg width="100%" viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" aria-label="BEKA platform overview showing survivor, response, and admin roles connected">
+
+      <!-- bg -->
+      <rect width="780" height="260" fill="rgba(192,57,15,0.05)" rx="20"/>
+
+      <!-- left column: survivor phone -->
+      <g>
+        <rect x="50" y="30" width="130" height="200" rx="16" fill="rgba(255,85,32,0.08)" stroke="rgba(255,85,32,0.4)" stroke-width="1.5"/>
+        <!-- phone screen -->
+        <rect x="60" y="50" width="110" height="160" rx="10" fill="rgba(255,85,32,0.06)"/>
+        <!-- camera notch -->
+        <ellipse cx="115" cy="57" rx="12" ry="5" fill="rgba(0,0,0,0.4)"/>
+        <!-- panic button big -->
+        <circle cx="115" cy="125" r="34" fill="rgba(255,85,32,0.15)" stroke="rgba(255,85,32,0.5)" stroke-width="1.5"/>
+        <circle cx="115" cy="125" r="24" fill="#ff5520"/>
+        <text x="115" y="120" text-anchor="middle" font-size="11" fill="white" font-family="system-ui" font-weight="600">SOS</text>
+        <text x="115" y="134" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.85)" font-family="system-ui">PANIC</text>
+        <!-- mini signal bars -->
+        <rect x="75" y="170" width="5" height="10" rx="1" fill="rgba(255,85,32,0.6)"/>
+        <rect x="83" y="165" width="5" height="15" rx="1" fill="rgba(255,85,32,0.7)"/>
+        <rect x="91" y="160" width="5" height="20" rx="1" fill="rgba(255,85,32,0.8)"/>
+        <rect x="99" y="157" width="5" height="23" rx="1" fill="rgba(255,85,32,0.5)"/>
+        <!-- loc pin -->
+        <circle cx="140" cy="166" r="8" fill="rgba(255,85,32,0.2)" stroke="rgba(255,85,32,0.5)" stroke-width="1"/>
+        <text x="140" y="170" text-anchor="middle" font-size="9" fill="#ff5520">📍</text>
+        <!-- label -->
+        <text x="115" y="244" text-anchor="middle" font-size="11" fill="#ff5520" font-family="system-ui" font-weight="600" letter-spacing="1">SURVIVOR</text>
+      </g>
+
+      <!-- arrows flowing right from phone -->
+      <!-- SMS arrow -->
+      <line x1="185" y1="100" x2="285" y2="85" stroke="rgba(255,85,32,0.55)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah)"/>
+      <!-- alert arrow -->
+      <line x1="185" y1="130" x2="285" y2="150" stroke="rgba(61,214,140,0.5)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah2)"/>
+
+      <!-- defs for arrowheads -->
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(255,85,32,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+        <marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(61,214,140,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+        <marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="rgba(255,170,68,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+      </defs>
+
+      <!-- label on arrows -->
+      <text x="233" y="82" text-anchor="middle" font-size="9" fill="rgba(255,85,32,0.7)" font-family="system-ui">SMS alert</text>
+      <text x="233" y="160" text-anchor="middle" font-size="9" fill="rgba(61,214,140,0.7)" font-family="system-ui">GPS location</text>
+
+      <!-- middle: BEKA hub -->
+      <g>
+        <circle cx="390" cy="130" r="58" fill="rgba(192,57,15,0.1)" stroke="rgba(255,85,32,0.35)" stroke-width="1.5"/>
+        <circle cx="390" cy="130" r="40" fill="rgba(192,57,15,0.18)" stroke="rgba(255,85,32,0.5)" stroke-width="1"/>
+        <text x="390" y="124" text-anchor="middle" font-size="14" fill="#ff5520" font-family="'Playfair Display',serif" font-weight="900">BEKA</text>
+        <text x="390" y="140" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)" font-family="system-ui" letter-spacing="1.5">PLATFORM</text>
+        <!-- mini icons around hub -->
+        <text x="390" y="98" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.4)">🔒</text>
+      </g>
+
+      <!-- arrows from hub to right -->
+      <line x1="448" y1="107" x2="548" y2="80" stroke="rgba(61,214,140,0.5)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah2)"/>
+      <line x1="448" y1="153" x2="548" y2="168" stroke="rgba(255,170,68,0.5)" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ah3)"/>
+      <text x="497" y="78" text-anchor="middle" font-size="9" fill="rgba(61,214,140,0.7)" font-family="system-ui">Dispatch</text>
+      <text x="497" y="178" text-anchor="middle" font-size="9" fill="rgba(255,170,68,0.7)" font-family="system-ui">Case file</text>
+
+      <!-- right: responder + admin stack -->
+      <!-- responder card -->
+      <g>
+        <rect x="550" y="30" width="170" height="85" rx="12" fill="rgba(61,214,140,0.07)" stroke="rgba(61,214,140,0.35)" stroke-width="1.2"/>
+        <!-- responder icon -->
+        <circle cx="578" cy="62" r="14" fill="rgba(61,214,140,0.15)" stroke="rgba(61,214,140,0.4)" stroke-width="1"/>
+        <text x="578" y="67" text-anchor="middle" font-size="14">🚔</text>
+        <text x="635" y="53" text-anchor="middle" font-size="11" fill="#3dd68c" font-family="system-ui" font-weight="600">RESPONDER</text>
+        <!-- status dots -->
+        <circle cx="603" cy="78" r="3.5" fill="#3dd68c"/>
+        <text x="613" y="82" font-size="8.5" fill="rgba(255,255,255,0.5)" font-family="system-ui">On-call · VSU</text>
+        <!-- mini map line -->
+        <rect x="560" y="92" width="150" height="1" fill="rgba(61,214,140,0.15)"/>
+        <text x="635" y="106" text-anchor="middle" font-size="8.5" fill="rgba(61,214,140,0.55)" font-family="system-ui">Lusaka · 2.3 km away</text>
+      </g>
+
+      <!-- admin card -->
+      <g>
+        <rect x="550" y="145" width="170" height="85" rx="12" fill="rgba(255,170,68,0.07)" stroke="rgba(255,170,68,0.35)" stroke-width="1.2"/>
+        <circle cx="578" cy="177" r="14" fill="rgba(255,170,68,0.14)" stroke="rgba(255,170,68,0.4)" stroke-width="1"/>
+        <text x="578" y="182" text-anchor="middle" font-size="14">🛡️</text>
+        <text x="635" y="168" text-anchor="middle" font-size="11" fill="#ffaa44" font-family="system-ui" font-weight="600">ADMIN</text>
+        <!-- live bar chart -->
+        <rect x="603" y="190" width="8" height="20" rx="2" fill="rgba(255,170,68,0.4)"/>
+        <rect x="614" y="185" width="8" height="25" rx="2" fill="rgba(255,170,68,0.55)"/>
+        <rect x="625" y="192" width="8" height="18" rx="2" fill="rgba(255,170,68,0.4)"/>
+        <rect x="636" y="183" width="8" height="27" rx="2" fill="rgba(255,170,68,0.65)"/>
+        <rect x="647" y="188" width="8" height="22" rx="2" fill="rgba(255,170,68,0.45)"/>
+        <text x="635" y="222" text-anchor="middle" font-size="8.5" fill="rgba(255,170,68,0.55)" font-family="system-ui">Live alerts dashboard</text>
+      </g>
+
+      <!-- Africa's Talking label at bottom center -->
+      <rect x="300" y="222" width="180" height="24" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      <text x="390" y="238" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.35)" font-family="system-ui" letter-spacing="0.5">Powered by Africa's Talking · SMS · WhatsApp</text>
+
+    </svg>
+  </div>
+
+  <!-- ORB -->
+  <div class="orb-wrap">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <a href="https://beka.base44.app" target="_blank" rel="noopener" class="orb" title="Open BEKA">
+      <span class="orb-icon">🆘</span>
+      <span class="orb-text">Help Now</span>
+    </a>
+  </div>
+
+  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="cta-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Get BEKA Free
+  </a>
+
+  <div class="taglines">
+    <span class="tagline"><b>Bemba</b> Tapali ukwikalafye.</span>
+    <span class="tagline"><b>Nyanja</b> Simuli nokha.</span>
+    <span class="tagline"><b>Tonga</b> Tamuli yeka yeka.</span>
+    <span class="tagline"><b>Lozi</b> Ha mu inzi mwanaa.</span>
+    <span class="tagline"><b>Kaonde</b> Tamwena bene.</span>
+  </div>
+
+  <div class="scroll-hint"><div class="scroll-hint-bar"></div>scroll</div>
+</section>
+
+<hr>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section alt">
+  <div class="wrap">
+    <div class="section-label">How it works</div>
+    <h2>From alert to assistance<br>in four steps</h2>
+    <p class="lead">Offline-resilient and location-aware — designed to work in the moment that matters most.</p>
+    <div class="steps-row">
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-icon-wrap">
+          <div class="step-num" style="background:#ff5520;color:#fff">01</div>
+          <svg viewBox="0 0 106 106" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="53" cy="53" r="53" fill="rgba(255,85,32,0.08)"/>
+            <circle cx="53" cy="53" r="35" fill="rgba(255,85,32,0.12)" stroke="rgba(255,85,32,0.35)" stroke-width="1.5"/>
+            <circle cx="53" cy="53" r="22" fill="rgba(255,85,32,0.22)" stroke="rgba(255,85,32,0.55)" stroke-width="1"/>
+            <circle cx="53" cy="53" r="12" fill="#ff5520"/>
+            <rect x="49" y="39" width="8" height="16" rx="4" fill="white"/>
+            <circle cx="53" cy="61" r="4" fill="white"/>
+          </svg>
+        </div>
+        <div class="step-t">Press the panic button</div>
+        <div class="step-d">One tap triggers an emergency alert with GPS — even when offline.</div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-icon-wrap">
+          <div class="step-num" style="background:#3dd68c;color:#0a2a1a">02</div>
+          <svg viewBox="0 0 106 106" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="53" cy="53" r="53" fill="rgba(61,214,140,0.07)"/>
+            <!-- phone sending -->
+            <rect x="36" y="30" width="34" height="52" rx="6" fill="rgba(61,214,140,0.15)" stroke="rgba(61,214,140,0.45)" stroke-width="1.2"/>
+            <rect x="40" y="36" width="26" height="32" rx="3" fill="rgba(61,214,140,0.1)"/>
+            <!-- signal waves -->
+            <path d="M74 38 Q82 47 74 56" fill="none" stroke="rgba(61,214,140,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M78 34 Q89 47 78 60" fill="none" stroke="rgba(61,214,140,0.35)" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- message -->
+            <rect x="40" y="40" width="26" height="14" rx="3" fill="rgba(61,214,140,0.25)"/>
+            <rect x="43" y="44" width="14" height="2" rx="1" fill="rgba(61,214,140,0.7)"/>
+            <rect x="43" y="49" width="10" height="2" rx="1" fill="rgba(61,214,140,0.5)"/>
+          </svg>
+        </div>
+        <div class="step-t">Contacts are notified</div>
+        <div class="step-d">Your emergency contacts get an SMS with your name and live location link.</div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-icon-wrap">
+          <div class="step-num" style="background:#3b82f6;color:#fff">03</div>
+          <svg viewBox="0 0 106 106" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="53" cy="53" r="53" fill="rgba(59,130,246,0.07)"/>
+            <!-- map -->
+            <rect x="28" y="28" width="50" height="50" rx="8" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.4)" stroke-width="1.2"/>
+            <!-- map roads -->
+            <line x1="28" y1="53" x2="78" y2="53" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <line x1="53" y1="28" x2="53" y2="78" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <!-- location marker -->
+            <circle cx="42" cy="45" r="5" fill="rgba(255,85,32,0.3)" stroke="#ff5520" stroke-width="1"/>
+            <circle cx="42" cy="45" r="2.5" fill="#ff5520"/>
+            <!-- responder vehicle -->
+            <rect x="55" y="56" width="14" height="9" rx="2" fill="rgba(59,130,246,0.6)" stroke="rgba(59,130,246,0.9)" stroke-width="1"/>
+            <rect x="57" y="58" width="5" height="4" rx="1" fill="rgba(255,255,255,0.4)"/>
+            <!-- arrow from vehicle to marker -->
+            <line x1="55" y1="53" x2="46" y2="48" stroke="rgba(59,130,246,0.7)" stroke-width="1.2" stroke-dasharray="3 2" marker-end="url(#ah-step)"/>
+            <defs><marker id="ah-step" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="rgba(59,130,246,0.9)" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+          </svg>
+        </div>
+        <div class="step-t">Responders dispatched</div>
+        <div class="step-d">Police, VSU, or shelter units are alerted and head to your location.</div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-icon-wrap">
+          <div class="step-num" style="background:#ffaa44;color:#2a1800">04</div>
+          <svg viewBox="0 0 106 106" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="53" cy="53" r="53" fill="rgba(255,170,68,0.07)"/>
+            <!-- folder/file -->
+            <rect x="28" y="42" width="50" height="38" rx="6" fill="rgba(255,170,68,0.15)" stroke="rgba(255,170,68,0.45)" stroke-width="1.2"/>
+            <rect x="28" y="36" width="24" height="10" rx="4" fill="rgba(255,170,68,0.25)" stroke="rgba(255,170,68,0.45)" stroke-width="1.2"/>
+            <!-- lines inside -->
+            <rect x="35" y="52" width="36" height="2.5" rx="1.25" fill="rgba(255,170,68,0.55)"/>
+            <rect x="35" y="59" width="28" height="2.5" rx="1.25" fill="rgba(255,170,68,0.4)"/>
+            <rect x="35" y="66" width="32" height="2.5" rx="1.25" fill="rgba(255,170,68,0.35)"/>
+            <!-- checkmark -->
+            <circle cx="68" cy="42" r="10" fill="#ffaa44"/>
+            <polyline points="63,42 66.5,46 74,38" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="step-t">A case file is created</div>
+        <div class="step-d">Evidence, updates, and status tracked from alert through to resolution.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- FEATURES -->
+<section id="features" class="section">
+  <div class="wrap">
+    <div class="section-label">Features</div>
+    <h2>Everything built into<br>one secure platform</h2>
+    <div class="grid-3">
+
+      <div class="card c-red">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+        <div class="card-t">Panic button</div>
+        <div class="card-d">One tap sends your location and triggers alerts. Supports silent mode. Works offline with auto-retry.</div>
+        <span class="tag tag-red">Core safety</span>
+      </div>
+
+      <div class="card c-red">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="card-t">Live location sharing</div>
+        <div class="card-d">Share a real-time location link with trusted contacts. Responders track your movement on the live alerts map.</div>
+        <span class="tag tag-red">Safety</span>
+      </div>
+
+      <div class="card c-amber">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="card-t">Incident reporting</div>
+        <div class="card-d">A guided three-step form captures incident type, location, and evidence. Anonymous reporting available across eight categories.</div>
+        <span class="tag tag-amber">Reporting</span>
+      </div>
+
+      <div class="card c-green">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="card-t">Evidence vault</div>
+        <div class="card-d">Securely upload photos, audio, documents, and ZP Form 32s. Every file is time-stamped and tamper-evident for legal proceedings.</div>
+        <span class="tag tag-green">Legal</span>
+      </div>
+
+      <div class="card c-green">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <div class="card-t">Statement builder</div>
+        <div class="card-d">Build a structured incident statement covering who, what, when, where, and injuries. Export as PDF with police reference numbers.</div>
+        <span class="tag tag-green">Legal</span>
+      </div>
+
+      <div class="card c-blue">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="card-t">Response unit directory</div>
+        <div class="card-d">Police, hospitals, shelters, VSUs, OSCs, and legal aid across all 10 Zambian provinces — with on-call status and contacts.</div>
+        <span class="tag tag-blue">Coordination</span>
+      </div>
+
+      <div class="card c-blue">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="card-t">Secure messaging</div>
+        <div class="card-d">Case-level messaging between survivors, responders, and staff. WhatsApp webhook integration included.</div>
+        <span class="tag tag-blue">Communication</span>
+      </div>
+
+      <div class="card c-red">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="card-t">Emergency contacts</div>
+        <div class="card-d">Save up to seven priority contacts. Each receives an SMS the moment a panic alert is triggered.</div>
+        <span class="tag tag-red">Safety</span>
+      </div>
+
+      <div class="card c-purple">
+        <div class="icon-box"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div class="card-t">Admin dashboard</div>
+        <div class="card-d">Live alerts map, escalation monitoring, audit logs, and AI-generated case summaries — all in one real-time dashboard.</div>
+        <span class="tag tag-purple">Admin</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- WHO IT'S FOR -->
+<section id="who" class="section alt">
+  <div class="wrap">
+    <div class="section-label">Who it's for</div>
+    <h2>One platform.<br>Three roles.</h2>
+    <div class="who-grid">
+
+      <div class="who-card s">
+        <!-- decorative art -->
+        <svg class="who-card-art" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="130" cy="30" r="80" fill="rgba(255,85,32,1)"/>
+          <circle cx="80" cy="80" r="40" fill="rgba(255,85,32,0.5)"/>
+        </svg>
+        <div class="badge">Survivor</div>
+        <div class="who-title">You are not alone.</div>
+        <div class="who-desc">BEKA puts safety in your hands — discreet, offline-ready, and available in your own language.</div>
+        <ul class="who-list">
+          <li>Panic button with silent mode</li>
+          <li>Live location to trusted contacts</li>
+          <li>Anonymous incident reporting</li>
+          <li>Evidence vault &amp; statement builder</li>
+          <li>Find shelters, VSUs &amp; legal aid</li>
+        </ul>
+      </div>
+
+      <div class="who-card r">
+        <svg class="who-card-art" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="130" cy="30" r="80" fill="rgba(61,214,140,1)"/>
+          <circle cx="80" cy="80" r="40" fill="rgba(61,214,140,0.5)"/>
+        </svg>
+        <div class="badge">Responder</div>
+        <div class="who-title">Reach them faster.</div>
+        <div class="who-desc">Real-time alerts and precise location data so every response is faster and better-informed.</div>
+        <ul class="who-list">
+          <li>Instant SMS panic alert notifications</li>
+          <li>Live map with survivor coordinates</li>
+          <li>Case acknowledgement &amp; updates</li>
+          <li>Secure staff channel messaging</li>
+          <li>Dispatch coordination across units</li>
+        </ul>
+      </div>
+
+      <div class="who-card a">
+        <svg class="who-card-art" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="130" cy="30" r="80" fill="rgba(255,170,68,1)"/>
+          <circle cx="80" cy="80" r="40" fill="rgba(255,170,68,0.5)"/>
+        </svg>
+        <div class="badge">Administrator</div>
+        <div class="who-title">Oversight at every level.</div>
+        <div class="who-desc">Complete visibility into the response system — from triggered alerts through to resolved cases.</div>
+        <ul class="who-list">
+          <li>Live alerts map &amp; command dashboard</li>
+          <li>Response unit management</li>
+          <li>Critical escalation monitoring</li>
+          <li>Full accountability &amp; audit logs</li>
+          <li>Analytics &amp; AI case summaries</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- IMPACT NUMBERS -->
+<section class="section">
+  <div class="wrap" style="text-align:center">
+    <div class="section-label" style="justify-content:center">Our reach</div>
+    <h2>Built for Zambia.<br>Ready for every province.</h2>
+    <div class="numbers-strip">
+      <div class="num-card">
+        <div class="num-big r">10</div>
+        <div class="num-label">Provinces covered across the Republic of Zambia</div>
+      </div>
+      <div class="num-card">
+        <div class="num-big g">5+</div>
+        <div class="num-label">Local languages — Bemba, Nyanja, Tonga, Lozi, Kaonde</div>
+      </div>
+      <div class="num-card">
+        <div class="num-big a">6</div>
+        <div class="num-label">Access channels — App, Web, SMS, WhatsApp, USSD, Offline</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- LANGUAGES + INCIDENT TYPES -->
+<section class="section alt">
+  <div class="wrap">
+    <div class="two-col">
+      <div>
+        <div class="section-label">Incident types supported</div>
+        <h2 style="font-size:clamp(1.65rem,3.5vw,2.3rem)">Covers every form<br>of gender-based violence.</h2>
+        <p class="lead" style="font-size:0.9rem">Every case type that matters to survivors in Zambia is recognised and handled with appropriate care.</p>
+        <div class="incident-grid">
+          <div class="incident-chip">Physical Violence</div>
+          <div class="incident-chip">Sexual Violence</div>
+          <div class="incident-chip">Emotional Abuse</div>
+          <div class="incident-chip">Economic Abuse</div>
+          <div class="incident-chip">Stalking</div>
+          <div class="incident-chip">Trafficking</div>
+          <div class="incident-chip">Forced Marriage</div>
+          <div class="incident-chip">Other</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Languages &amp; channels</div>
+        <h2 style="font-size:clamp(1.65rem,3.5vw,2.3rem)">In your language,<br>wherever you are.</h2>
+        <p class="lead" style="font-size:0.9rem">BEKA speaks five Zambian languages and works across every channel — smartphone, feature phone, or web.</p>
+        <div class="chips">
+          <div class="chip"><strong>BEM</strong>Tapali ukwikalafye</div>
+          <div class="chip"><strong>NYA</strong>Simuli nokha</div>
+          <div class="chip"><strong>TON</strong>Tamuli yeka yeka</div>
+          <div class="chip"><strong>LOZ</strong>Ha mu inzi mwanaa</div>
+          <div class="chip"><strong>KAO</strong>Tamwena bene</div>
+          <div class="chip"><strong>ENG</strong>You are not alone</div>
+        </div>
+        <div class="channels" style="margin-top:1.5rem">
+          <div class="ch"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1"/></svg><span>Mobile App</span></div>
+          <div class="ch"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8 21 12 17 16 21"/></svg><span>Web Browser</span></div>
+          <div class="ch"><svg viewBox="0 0 24 24"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg><span>SMS</span></div>
+          <div class="ch"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>WhatsApp</span></div>
+          <div class="ch"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.74 3.46 2 2 0 0 1 3.71 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6.29 6.29l1.13-1.13a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>USSD</span></div>
+          <div class="ch"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span>Offline-ready</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- QUOTE -->
+<div class="quote-wrap">
+  <div class="quote-inner">
+    <span class="q-mark">"</span>
+    <div class="q-rule"></div>
+    <div class="q-text">No survivor should face a moment of danger without a path to safety. BEKA closes that gap — one alert at a time.</div>
+    <div class="q-attr">Safe4All · Gender-Based Violence Response · Republic of Zambia</div>
+  </div>
+</div>
+
+<hr>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="section-label">Get started</div>
+  <h2>Ready to make your<br>community safer?</h2>
+  <p>BEKA is free to access for survivors, responders, NGOs, shelters, and government agencies across Zambia. Open it now — no installation needed.</p>
+    <div class="store-badges">
+    <a href="#" aria-label="Download on the App Store" class="store-badge">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.365 1.43c0 1.14-.467 2.23-1.23 3.02-.82.86-2.15 1.52-3.26 1.43-.13-1.12.42-2.29 1.17-3.04.84-.85 2.27-1.49 3.32-1.41zM20.5 17.49c-.49 1.14-.73 1.65-1.36 2.66-.88 1.42-2.13 3.18-3.67 3.19-1.37.01-1.72-.89-3.58-.88-1.86.01-2.24.9-3.61.89-1.54-.01-2.72-1.6-3.6-3.01C2.21 16.5 1.92 11.96 3.45 9.62c1.08-1.66 2.79-2.63 4.39-2.63 1.63 0 2.66.9 4.01.9 1.31 0 2.11-.9 4-.9 1.43 0 2.94.78 4.02 2.13-3.53 1.94-2.96 6.99.63 8.37z"/></svg>
+      <span><small>Download on the</small><strong>App Store</strong></span>
+    </a>
+    <a href="#" aria-label="Get it on Google Play" class="store-badge">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 1.85a1.5 1.5 0 0 0-.6 1.2v17.9c0 .47.21.9.56 1.18l10.16-10.13L3.6 1.85zM14.84 13.04l2.84 2.84-11.6 6.68c-.18.1-.4.16-.62.14l9.38-9.66zm0-2.08L5.46 1.3c.2-.02.42.04.6.14l11.61 6.69-2.83 2.83zM21.5 11.1l-3.21-1.85-3.05 3.05 3.05 3.05 3.21-1.85a1.5 1.5 0 0 0 0-2.4z"/></svg>
+      <span><small>Get it on</small><strong>Google Play</strong></span>
+    </a>
+  </div>
+  <br>
+  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="cta-btn" style="position:relative">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Open BEKA
+  </a>
+  <br>
+  <a href="https://beka.base44.app" target="_blank" rel="noopener" class="app-url">
+    beka.base44.app
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-wrap">
+    <div>
+      <div class="foot-logo">BE<span>KA</span></div>
+      <div class="foot-desc">A Safe4All initiative for gender-based violence emergency response across the Republic of Zambia.</div>
+    </div>
+    <div class="foot-col">
+      <h4>Platform</h4>
+      <a href="#how">How it works</a>
+      <a href="#features">Features</a>
+      <a href="#who">Who it's for</a>
+      <a href="https://beka.base44.app" target="_blank" rel="noopener">Open App ↗</a>
+    </div>
+    <div class="foot-col">
+      <h4>Access</h4>
+      <a href="https://beka.base44.app" target="_blank" rel="noopener">beka.base44.app</a>
+      <a href="mailto:support@safe4all.zm">Contact</a>
+      <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2025 Safe4All · BEKA GBV Emergency Response</span>
+    <span>Built for survivors, responders &amp; communities across Zambia</span>
+  </div>
+</footer>`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "BEKA — Safe4All GBV Emergency Response" },
+      { name: "description", content: "BEKA is a secure, multilingual GBV emergency response platform connecting survivors to responders, shelters, and legal aid across Zambia." },
+      { property: "og:title", content: "BEKA — Safe4All GBV Emergency Response" },
+      { property: "og:description", content: "Secure, multilingual GBV emergency response across Zambia." },
+    ],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600&display=swap" },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  useEffect(() => {
+    const handlers: Array<{ a: HTMLAnchorElement; fn: (e: Event) => void }> = [];
+    document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+      const fn = (e: Event) => {
+        const href = a.getAttribute("href");
+        if (!href || href === "#") return;
+        const t = document.querySelector(href);
+        if (t) { e.preventDefault(); (t as HTMLElement).scrollIntoView({ behavior: "smooth", block: "start" }); }
+      };
+      a.addEventListener("click", fn);
+      handlers.push({ a, fn });
+    });
+    const nav = document.getElementById("nav");
+    const onScroll = () => {
+      if (nav) nav.style.background = window.scrollY > 50 ? "rgba(255,242,236,0.95)" : "rgba(255,242,236,0.82)";
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      handlers.forEach(({ a, fn }) => a.removeEventListener("click", fn));
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
+      <div dangerouslySetInnerHTML={{ __html: PAGE_HTML }} />
+    </>
   );
 }
