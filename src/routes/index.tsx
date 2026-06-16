@@ -21,8 +21,8 @@ const PAGE_CSS = String.raw`
   --text:#2a0a04;
   --muted:#7a4a3e;
   --dim:#a8786a;
-  --ff-display:'Fredoka One','Fredoka',system-ui,sans-serif;
-  --ff-body:'Fredoka One','Fredoka',system-ui,sans-serif;
+  --ff-display:'Poppins',system-ui,sans-serif;
+  --ff-body:'Poppins',system-ui,sans-serif;
   --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px
 }
 html{scroll-behavior:smooth}
