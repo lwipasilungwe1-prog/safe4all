@@ -1017,6 +1017,32 @@ function Index() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
+    // Mobile menu toggle
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const scrim = document.getElementById("mobile-scrim");
+    const closeMenu = () => {
+      hamburger?.classList.remove("open");
+      mobileMenu?.classList.remove("open");
+      scrim?.classList.remove("open");
+      hamburger?.setAttribute("aria-expanded", "false");
+      mobileMenu?.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("menu-open");
+    };
+    const toggleMenu = () => {
+      const isOpen = hamburger?.classList.toggle("open");
+      mobileMenu?.classList.toggle("open", isOpen);
+      scrim?.classList.toggle("open", isOpen);
+      hamburger?.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      mobileMenu?.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      document.body.classList.toggle("menu-open", !!isOpen);
+    };
+    hamburger?.addEventListener("click", toggleMenu);
+    scrim?.addEventListener("click", closeMenu);
+    mobileMenu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+
+
+
     // Scroll reveal
     const targets = document.querySelectorAll<HTMLElement>(
       '.section .wrap > *, .card, .who-card, .num-card, .step, .incident-chip, .chip, .ch, .quote-inner, .final-cta > *'
