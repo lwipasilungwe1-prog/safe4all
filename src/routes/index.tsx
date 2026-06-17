@@ -1135,6 +1135,7 @@ function Index() {
       handlers.forEach(({ a, fn }) => a.removeEventListener("click", fn));
       window.removeEventListener("scroll", onScroll);
       mobileListeners.forEach(({ el, type, fn }) => el?.removeEventListener(type, fn as EventListener));
+      carouselCleanup?.();
       io.disconnect();
     };
   }, []);
