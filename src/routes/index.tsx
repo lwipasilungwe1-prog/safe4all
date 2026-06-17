@@ -1097,6 +1097,24 @@ function Index() {
       ...Array.from(mobileLinks).map((a) => ({ el: a as HTMLElement, type: "click", fn: closeMenu })),
     ] as const;
 
+    // Carousel dots sync
+    const phonesRow = document.getElementById("phones-row") as HTMLElement | null;
+    const dotsContainer = document.getElementById("carousel-dots") as HTMLElement | null;
+    const dots = dotsContainer?.querySelectorAll<HTMLElement>(".dot");
+    let carouselCleanup: (() => void) | undefined;
+    if (phonesRow && dots && dots.length > 0) {
+      const updateDots = () => {
+        const scrollLeft = phonesRow.scrollLeft;
+        const itemWidth = phonesRow.scrollWidth / dots.length;
+        const activeIndex = Math.round(scrollLeft / itemWidth);
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === activeIndex);
+        });
+      };
+      phonesRow.addEventListener("scroll", updateDots, { passive: true });
+      carouselCleanup = () => phonesRow.removeEventListener("scroll", updateDots);
+    }
+
     // Scroll reveal
     const targets = document.querySelectorAll<HTMLElement>(
       '.section .wrap > *, .card, .who-card, .num-card, .step, .incident-chip, .chip, .ch, .quote-inner, .final-cta > *'
