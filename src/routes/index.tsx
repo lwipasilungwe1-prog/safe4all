@@ -415,11 +415,11 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
   .ring:nth-child(3){width:220px;height:220px}
   .orb{width:104px;height:104px}
   .orb-icon{width:32px;height:32px}
-  .phones-row{gap:0.7rem;margin-bottom:2rem}
-  .phone-shot{flex:1 1 130px;max-width:180px;border-radius:22px}
-  .phone-shot img{border-radius:22px}
-  .phone-shot.mid{transform:none}
-  .phone-shot:hover,.phone-shot.mid:hover{transform:translateY(-6px) scale(1.02)}
+  .phones-row{gap:0.4rem;margin-bottom:2rem;overflow-x:auto;justify-content:center;padding:0 0.5rem}
+  .phone-shot{flex:0 0 26vw;max-width:110px;border-radius:18px;animation:none}
+  .phone-shot img{border-radius:18px}
+  .phone-shot.mid{transform:translateY(-8px) scale(1.03)}
+  .phone-shot:hover,.phone-shot.mid:hover{transform:translateY(-8px) scale(1.03)}
   .cta-btn{padding:0.85rem 1.8rem;font-size:0.95rem;margin-bottom:2rem}
   .taglines{gap:0.3rem 1rem}
   .tagline{font-size:0.74rem}
