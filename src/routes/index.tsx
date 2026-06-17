@@ -483,6 +483,11 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
 h1 em,h2 em{font-style:normal;color:var(--red-bright)}
 .eyebrow,.tagline,.chip,.q-text{font-style:normal !important}
 
+/* CAROUSEL DOTS */
+.carousel-dots{display:none;gap:0.45rem;justify-content:center;margin-top:0.6rem}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(192,57,15,0.25);transition:background 0.25s,transform 0.25s}
+.dot.active{background:var(--red-bright);transform:scale(1.25)}
+
 /* PHONE FLOAT */
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 @keyframes floatyMid{0%,100%{transform:translateY(-30px) scale(1.06)}50%{transform:translateY(-46px) scale(1.06)}}
