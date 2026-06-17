@@ -403,6 +403,12 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
   .grid-3,.who-grid{grid-template-columns:1fr;gap:1rem}
   .incident-grid{grid-template-columns:1fr 1fr}
   .quote-wrap,.final-cta{padding:4.5rem 1.1rem}
+  /* screenshot carousel */
+  .phones-row{flex-wrap:nowrap;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:0 15vw;justify-content:flex-start;scrollbar-width:none}
+  .phones-row::-webkit-scrollbar{display:none}
+  .phone-shot{flex:0 0 70vw;max-width:320px;scroll-snap-align:center;animation:none}
+  .phone-shot.mid{transform:none}
+  .carousel-dots{display:flex}
 }
 @media(max-width:500px){
   h1{font-size:clamp(2.4rem,11vw,3.4rem);line-height:1.05}
@@ -415,11 +421,11 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
   .ring:nth-child(3){width:220px;height:220px}
   .orb{width:104px;height:104px}
   .orb-icon{width:32px;height:32px}
-  .phones-row{gap:0.4rem;margin-bottom:2rem;overflow-x:auto;justify-content:center;padding:0 0.5rem}
-  .phone-shot{flex:0 0 26vw;max-width:110px;border-radius:18px;animation:none}
-  .phone-shot img{border-radius:18px}
-  .phone-shot.mid{transform:translateY(-8px) scale(1.03)}
-  .phone-shot:hover,.phone-shot.mid:hover{transform:translateY(-8px) scale(1.03)}
+  .phones-row{gap:0.8rem;padding:0 12vw;margin-bottom:1.5rem}
+  .phone-shot{flex:0 0 76vw;max-width:300px;border-radius:24px}
+  .phone-shot img{border-radius:24px}
+  .phone-shot.mid{transform:translateY(-6px) scale(1.02)}
+  .phone-shot:hover,.phone-shot.mid:hover{transform:translateY(-6px) scale(1.02)}
   .cta-btn{padding:0.85rem 1.8rem;font-size:0.95rem;margin-bottom:2rem}
   .taglines{gap:0.3rem 1rem}
   .tagline{font-size:0.74rem}
@@ -476,6 +482,11 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
 }
 h1 em,h2 em{font-style:normal;color:var(--red-bright)}
 .eyebrow,.tagline,.chip,.q-text{font-style:normal !important}
+
+/* CAROUSEL DOTS */
+.carousel-dots{display:none;gap:0.45rem;justify-content:center;margin-top:0.6rem}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(192,57,15,0.25);transition:background 0.25s,transform 0.25s}
+.dot.active{background:var(--red-bright);transform:scale(1.25)}
 
 /* PHONE FLOAT */
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
@@ -565,11 +576,12 @@ const PAGE_HTML = String.raw`<!-- NAV -->
   <p class="hero-sub">BEKA is a secure, multilingual platform connecting survivors of gender-based violence to responders, shelters, and legal aid — instantly and discreetly.</p>
 
   <!-- HERO VISUAL — real app screenshots -->
-  <div class="phones-row">
+  <div class="phones-row" id="phones-row">
     <div class="phone-shot"><img src="/__l5e/assets-v1/25f783f7-de1a-4cb4-8dc0-8f570c8a8e09/app-contacts-form.jpg" alt="BEKA app — add emergency contact screen" loading="eager"/></div>
     <div class="phone-shot mid"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="eager"/></div>
     <div class="phone-shot"><img src="/__l5e/assets-v1/14d16e1e-8d68-4df8-8f39-436acd455a45/app-settings.jpg" alt="BEKA app — privacy and settings screen" loading="lazy"/></div>
   </div>
+  <div class="carousel-dots" id="carousel-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
 
   <!-- ORB (decorative — non-functional preview) -->
   <div class="orb-wrap" aria-hidden="true">
@@ -1085,6 +1097,24 @@ function Index() {
       ...Array.from(mobileLinks).map((a) => ({ el: a as HTMLElement, type: "click", fn: closeMenu })),
     ] as const;
 
+    // Carousel dots sync
+    const phonesRow = document.getElementById("phones-row") as HTMLElement | null;
+    const dotsContainer = document.getElementById("carousel-dots") as HTMLElement | null;
+    const dots = dotsContainer?.querySelectorAll<HTMLElement>(".dot");
+    let carouselCleanup: (() => void) | undefined;
+    if (phonesRow && dots && dots.length > 0) {
+      const updateDots = () => {
+        const scrollLeft = phonesRow.scrollLeft;
+        const itemWidth = phonesRow.scrollWidth / dots.length;
+        const activeIndex = Math.round(scrollLeft / itemWidth);
+        dots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === activeIndex);
+        });
+      };
+      phonesRow.addEventListener("scroll", updateDots, { passive: true });
+      carouselCleanup = () => phonesRow.removeEventListener("scroll", updateDots);
+    }
+
     // Scroll reveal
     const targets = document.querySelectorAll<HTMLElement>(
       '.section .wrap > *, .card, .who-card, .num-card, .step, .incident-chip, .chip, .ch, .quote-inner, .final-cta > *'
@@ -1105,6 +1135,7 @@ function Index() {
       handlers.forEach(({ a, fn }) => a.removeEventListener("click", fn));
       window.removeEventListener("scroll", onScroll);
       mobileListeners.forEach(({ el, type, fn }) => el?.removeEventListener(type, fn as EventListener));
+      carouselCleanup?.();
       io.disconnect();
     };
   }, []);
