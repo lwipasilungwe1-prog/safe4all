@@ -40,7 +40,7 @@ nav{
   box-shadow:0 8px 30px rgba(192,57,15,0.18);
   transition:background 0.3s
 }
-.logo{font-family:var(--ff-display);font-style:italic;font-size:1.45rem;font-weight:900;letter-spacing:0.04em;color:var(--text);text-decoration:none}
+.logo{font-family:var(--ff-display);font-size:1.45rem;font-weight:900;letter-spacing:0.04em;color:var(--text);text-decoration:none}
 .logo span{color:var(--red-bright)}
 nav ul{list-style:none;display:flex;gap:2.5rem}
 nav ul a{color:var(--muted);text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s}
@@ -74,7 +74,7 @@ nav ul a:hover{color:var(--text)}
 .eyebrow{
   position:relative;z-index:1;
   display:inline-flex;align-items:center;gap:0.6rem;
-  font-family:var(--ff-display);font-style:italic;font-size:1.05rem;
+  font-family:var(--ff-display);font-size:1.05rem;
   color:var(--red);letter-spacing:0.01em;
   margin-bottom:1.5rem
 }
@@ -84,12 +84,12 @@ nav ul a:hover{color:var(--text)}
 
 h1{
   position:relative;z-index:1;
-  font-family:var(--ff-display);font-style:italic;
+  font-family:var(--ff-display);
   font-size:clamp(3.4rem,9vw,7rem);
   font-weight:700;line-height:1.02;letter-spacing:-0.01em;
   max-width:900px;margin-bottom:1.5rem;color:var(--text)
 }
-h1 em{font-style:italic;color:var(--red-bright)}
+h1 em{font-style:normal;color:var(--red-bright)}
 h1 .highlight-amber{color:var(--amber-bright)}
 
 .hero-sub{
@@ -150,7 +150,7 @@ h1 .highlight-amber{color:var(--amber-bright)}
 .cta-btn svg{width:17px;height:17px}
 
 .taglines{position:relative;z-index:1;display:flex;gap:0.4rem 1.5rem;flex-wrap:wrap;justify-content:center;max-width:600px}
-.tagline{font-size:0.78rem;color:var(--dim);font-style:italic}
+.tagline{font-size:0.78rem;color:var(--dim)}
 .tagline b{color:var(--amber);font-style:normal;font-weight:700;margin-right:0.3rem;font-size:0.7rem;letter-spacing:0.04em}
 
 .scroll-hint{
@@ -175,7 +175,7 @@ hr{border:none;height:1px;background:linear-gradient(to right,transparent,rgba(2
   color:var(--red-bright);margin-bottom:0.9rem
 }
 .section-label::before{content:'';display:block;width:20px;height:1.5px;background:var(--red-bright);border-radius:2px}
-h2{font-family:var(--ff-display);font-style:italic;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;line-height:1.08;color:var(--text);margin-bottom:1rem}
+h2{font-family:var(--ff-display);font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;line-height:1.08;color:var(--text);margin-bottom:1rem}
 .lead{font-size:1rem;color:var(--muted);max-width:480px;line-height:1.85}
 
 /* HOW IT WORKS — horizontal illustrated steps */
@@ -290,7 +290,7 @@ h2{font-family:var(--ff-display);font-style:italic;font-size:clamp(2.2rem,5vw,3.
 .chip{
   background:var(--panel);border:1px solid var(--border);
   border-radius:50px;padding:0.42rem 1rem;
-  font-size:0.84rem;color:var(--muted);font-style:italic;
+  font-size:0.84rem;color:var(--muted);
   transition:border-color 0.2s,color 0.2s
 }
 .chip:hover{border-color:rgba(255,85,32,0.4);color:var(--text)}
@@ -341,7 +341,7 @@ h2{font-family:var(--ff-display);font-style:italic;font-size:clamp(2.2rem,5vw,3.
 .quote-inner{max-width:700px;margin:0 auto}
 .q-mark{font-family:var(--ff-display);font-size:6rem;line-height:0.35;color:rgba(255,85,32,0.25);display:block;margin-bottom:1.8rem}
 .q-rule{width:42px;height:2px;background:var(--red-bright);border-radius:2px;margin:0 auto 1.4rem}
-.q-text{font-family:var(--ff-display);font-size:clamp(1.25rem,3.5vw,1.95rem);font-weight:700;font-style:italic;line-height:1.48;color:var(--text);margin-bottom:1.4rem}
+.q-text{font-family:var(--ff-display);font-size:clamp(1.25rem,3.5vw,1.95rem);font-weight:700;line-height:1.48;color:var(--text);margin-bottom:1.4rem}
 .q-attr{font-size:0.76rem;color:var(--dim);letter-spacing:0.1em;text-transform:uppercase}
 
 /* FINAL CTA */
@@ -585,9 +585,9 @@ const PAGE_HTML = String.raw`<!-- NAV -->
 
   <!-- HERO VISUAL — real app screenshots -->
   <div class="phones-row" id="phones-row">
-    <div class="phone-shot"><img src="/__l5e/assets-v1/25f783f7-de1a-4cb4-8dc0-8f570c8a8e09/app-contacts-form.jpg" alt="BEKA app — add emergency contact screen" loading="eager"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="eager"/></div>
     <div class="phone-shot mid"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="eager"/></div>
-    <div class="phone-shot"><img src="/__l5e/assets-v1/14d16e1e-8d68-4df8-8f39-436acd455a45/app-settings.jpg" alt="BEKA app — privacy and settings screen" loading="lazy"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="lazy"/></div>
   </div>
   <div class="carousel-dots" id="carousel-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
 
@@ -597,7 +597,7 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <div class="ring"></div>
     <div class="ring"></div>
     <div class="orb" role="presentation">
-      <svg class="orb-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      <svg class="orb-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <span class="orb-text">Help Now</span>
     </div>
   </div>
