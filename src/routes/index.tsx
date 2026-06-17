@@ -394,7 +394,7 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
   .nav-btn{padding:0.5rem 1rem;font-size:0.78rem}
   .logo{font-size:1.2rem}
   .section{padding:4rem 1.1rem}
-  .hero{padding:6rem 1.1rem 4rem}
+  .hero{padding:5rem 1.1rem 3rem}
   .channels{grid-template-columns:1fr}
   .numbers-strip{grid-template-columns:1fr;gap:1rem}
   .footer-wrap{grid-template-columns:1fr;gap:2rem}
@@ -404,10 +404,17 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
   .incident-grid{grid-template-columns:1fr 1fr}
   .quote-wrap,.final-cta{padding:4.5rem 1.1rem}
   /* screenshot carousel */
-  .phones-row{flex-wrap:nowrap;gap:0.75rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:0 22vw;justify-content:flex-start;scrollbar-width:none}
+  .phones-row{flex-wrap:nowrap;gap:0.75rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:0 22vw;justify-content:flex-start;scrollbar-width:none;margin-bottom:1.5rem}
   .phones-row::-webkit-scrollbar{display:none}
   .phone-shot{flex:0 0 56vw;max-width:280px;scroll-snap-align:center;animation:none}
+  .phone-shot img{max-height:42vh;width:auto;object-fit:contain}
   .phone-shot.mid{transform:none;animation:none}
+  .orb-wrap{width:160px;height:160px;margin-bottom:1.5rem}
+  .ring:nth-child(1){width:100px;height:100px}
+  .ring:nth-child(2){width:140px;height:140px}
+  .ring:nth-child(3){width:180px;height:180px}
+  .orb{width:90px;height:90px}
+  .orb-icon{width:28px;height:28px}
   .carousel-dots{display:flex}
 }
 @media(max-width:500px){
