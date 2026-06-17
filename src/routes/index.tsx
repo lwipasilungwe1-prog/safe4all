@@ -504,6 +504,32 @@ h1 em,h2 em{font-style:normal;color:var(--red-bright)}
 .phone-shot:nth-child(3){animation-delay:-3s}
 .phone-shot.mid{animation:floatyMid 5.5s ease-in-out infinite}
 
+@media(max-width:768px){
+  .phones-row{
+    display:flex;flex-wrap:nowrap;justify-content:flex-start;align-items:center;
+    gap:0;width:100%;max-width:100vw;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
+    padding:0 calc((100vw - min(62vw,220px)) / 2);margin:0 auto 1rem;
+    scrollbar-width:none
+  }
+  .phones-row::-webkit-scrollbar{display:none}
+  .phone-shot,.phone-shot.mid{
+    flex:0 0 min(62vw,220px);width:min(62vw,220px);max-width:220px;
+    scroll-snap-align:center;scroll-snap-stop:always;transform:none;animation:none;
+    border-radius:20px;filter:drop-shadow(0 12px 22px rgba(192,57,15,0.22))
+  }
+  .phone-shot:hover,.phone-shot.mid:hover{transform:none}
+  .phone-shot img{
+    display:block;width:100%;height:auto;max-height:36vh;object-fit:contain;border-radius:20px
+  }
+}
+
+@media(max-width:500px){
+  .phones-row{padding:0 calc((100vw - min(58vw,200px)) / 2);margin-bottom:0.85rem}
+  .phone-shot,.phone-shot.mid{flex-basis:min(58vw,200px);width:min(58vw,200px);max-width:200px}
+  .phone-shot img{max-height:34vh}
+}
+
 /* HERO GRADIENT TEXT SHEEN */
 h1 em{background:linear-gradient(90deg,#ff5520 0%,#ffaa44 50%,#ff5520 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sheen 4s ease-in-out infinite}
 @keyframes sheen{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
