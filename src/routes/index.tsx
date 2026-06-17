@@ -419,21 +419,22 @@ footer{background:rgba(192,57,15,0.08);border-top:1px solid var(--border);paddin
 }
 @media(max-width:500px){
   h1{font-size:clamp(2.4rem,11vw,3.4rem);line-height:1.05}
-  .hero-sub{font-size:0.95rem;margin-bottom:2rem}
-  .eyebrow{font-size:0.82rem;text-align:center;padding:0 0.5rem;gap:0.4rem}
+  .hero-sub{font-size:0.95rem;margin-bottom:1.5rem}
+  .eyebrow{font-size:0.82rem;text-align:center;padding:0 0.5rem;gap:0.4rem;margin-bottom:1rem}
   .eyebrow::before,.eyebrow::after{display:none}
-  .orb-wrap{width:220px;height:220px;margin-bottom:2rem}
-  .ring:nth-child(1){width:120px;height:120px}
-  .ring:nth-child(2){width:170px;height:170px}
-  .ring:nth-child(3){width:220px;height:220px}
-  .orb{width:104px;height:104px}
-  .orb-icon{width:32px;height:32px}
-  .phones-row{gap:0.6rem;padding:0 25vw;margin-bottom:1.2rem}
+  .hero{padding:4.5rem 1.1rem 2.5rem}
+  .orb-wrap{width:140px;height:140px;margin-bottom:1.2rem}
+  .ring:nth-child(1){width:85px;height:85px}
+  .ring:nth-child(2){width:120px;height:120px}
+  .ring:nth-child(3){width:155px;height:155px}
+  .orb{width:80px;height:80px}
+  .orb-icon{width:26px;height:26px}
+  .phones-row{gap:0.6rem;padding:0 25vw;margin-bottom:1rem}
   .phone-shot{flex:0 0 50vw;max-width:220px;border-radius:20px;animation:none}
-  .phone-shot img{border-radius:20px}
+  .phone-shot img{border-radius:20px;max-height:38vh;width:auto;object-fit:contain}
   .phone-shot.mid{transform:none;animation:none}
   .phone-shot:hover,.phone-shot.mid:hover{transform:none}
-  .cta-btn{padding:0.85rem 1.8rem;font-size:0.95rem;margin-bottom:2rem}
+  .cta-btn{padding:0.85rem 1.8rem;font-size:0.95rem;margin-bottom:1.5rem}
   .taglines{gap:0.3rem 1rem}
   .tagline{font-size:0.74rem}
   .store-badges{gap:0.5rem}
