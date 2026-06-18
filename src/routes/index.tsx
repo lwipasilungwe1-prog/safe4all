@@ -1104,10 +1104,13 @@ function Index() {
     };
 
     const toggleMenu = () => {
-      console.log("[BEKA] toggleMenu fired");
       const isOpen = hamburger?.classList.contains("open");
       if (isOpen) closeMenu(); else openMenu();
     };
+
+    // Expose globally so inline onclick handlers in dangerouslySetInnerHTML can call them
+    (window as any).__bekaToggleMenu = toggleMenu;
+    (window as any).__bekaCloseMenu = closeMenu;
 
     // Focus trap
     const handleKeydown = (e: KeyboardEvent) => {
