@@ -1114,7 +1114,7 @@ function Index() {
 
     // Focus trap
     const handleKeydown = (e: KeyboardEvent) => {
-      if (!hamburger?.classList.contains("open")) return;
+      if (!q("hamburger")?.classList.contains("open")) return;
       if (e.key === "Escape") { e.preventDefault(); closeMenu(); return; }
       if (e.key !== "Tab") return;
       const focusables = getFocusables();
