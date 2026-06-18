@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const PAGE_CSS = String.raw`
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -571,9 +571,10 @@ h1 em{background:linear-gradient(90deg,#ff5520 0%,#ffaa44 50%,#ff5520 100%);back
 .mobile-scrim.open{opacity:1;pointer-events:auto}
 body.menu-open{overflow:hidden}
 @media(max-width:768px){
-  .hamburger{display:flex}
+  .hamburger{display:flex;position:fixed;top:1.55rem;right:max(1.15rem,calc(50vw - 219px));z-index:101}
   .nav-btn-desktop{display:none}
 }
+
 
 `;
 
@@ -586,19 +587,14 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <li><a href="#who">Who it's for</a></li>
   </ul>
   <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn nav-btn-desktop">Open App ↗</a>
-  <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
-<!-- MOBILE MENU -->
-<div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Main navigation" aria-hidden="true" tabindex="-1">
-  <a href="#how" tabindex="0">How it works</a>
-  <a href="#features" tabindex="0">Features</a>
-  <a href="#who" tabindex="0">Who it's for</a>
-  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn" tabindex="0">Open App ↗</a>
-</div>
-<div id="mobile-scrim" class="mobile-scrim" aria-hidden="true"></div>
+
+
+
+
+
+
 
 
 <!-- HERO -->
@@ -1045,6 +1041,22 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle("menu-open", menuOpen);
+    if (menuOpen) {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setMenuOpen(false);
+      };
+      document.addEventListener("keydown", onKey);
+      return () => {
+        document.removeEventListener("keydown", onKey);
+        document.body.classList.remove("menu-open");
+      };
+    }
+  }, [menuOpen]);
+
   useEffect(() => {
     const handlers: Array<{ a: HTMLAnchorElement; fn: (e: Event) => void }> = [];
     document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
@@ -1063,73 +1075,8 @@ function Index() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Mobile menu toggle
-    const hamburger = document.getElementById("hamburger") as HTMLButtonElement | null;
-    const mobileMenu = document.getElementById("mobile-menu") as HTMLElement | null;
-    const scrim = document.getElementById("mobile-scrim") as HTMLElement | null;
+    const mobileListeners: ReadonlyArray<{ el: EventTarget | null; type: string; fn: EventListener }> = [];
 
-    const getFocusables = () => {
-      if (!mobileMenu) return [];
-      return Array.from(
-        mobileMenu.querySelectorAll<HTMLElement>(
-          'a[href], button, [tabindex]:not([tabindex="-1"])'
-        )
-      ).filter((el) => !(el as HTMLButtonElement).disabled && el.getAttribute("aria-hidden") !== "true");
-    };
-
-    const closeMenu = () => {
-      hamburger?.classList.remove("open");
-      mobileMenu?.classList.remove("open");
-      scrim?.classList.remove("open");
-      hamburger?.setAttribute("aria-expanded", "false");
-      mobileMenu?.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("menu-open");
-      hamburger?.focus();
-    };
-
-    const openMenu = () => {
-      hamburger?.classList.add("open");
-      mobileMenu?.classList.add("open");
-      scrim?.classList.add("open");
-      hamburger?.setAttribute("aria-expanded", "true");
-      mobileMenu?.setAttribute("aria-hidden", "false");
-      document.body.classList.add("menu-open");
-      const focusables = getFocusables();
-      focusables[0]?.focus();
-    };
-
-    const toggleMenu = () => {
-      const isOpen = hamburger?.classList.contains("open");
-      if (isOpen) closeMenu(); else openMenu();
-    };
-
-    // Focus trap
-    const handleKeydown = (e: KeyboardEvent) => {
-      if (!hamburger?.classList.contains("open")) return;
-      if (e.key === "Escape") { e.preventDefault(); closeMenu(); return; }
-      if (e.key !== "Tab") return;
-      const focusables = getFocusables();
-      if (focusables.length === 0) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    };
-
-    hamburger?.addEventListener("click", toggleMenu);
-    scrim?.addEventListener("click", closeMenu);
-    document.addEventListener("keydown", handleKeydown);
-    const mobileLinks = mobileMenu?.querySelectorAll("a") ?? [];
-    mobileLinks.forEach((a) => a.addEventListener("click", closeMenu));
-    const mobileListeners = [
-      { el: hamburger, type: "click", fn: toggleMenu },
-      { el: scrim, type: "click", fn: closeMenu },
-      { el: document, type: "keydown", fn: handleKeydown },
-      ...Array.from(mobileLinks).map((a) => ({ el: a as HTMLElement, type: "click", fn: closeMenu })),
-    ] as const;
 
     // Carousel dots sync
     const phonesRow = document.getElementById("phones-row") as HTMLElement | null;
@@ -1174,10 +1121,41 @@ function Index() {
     };
   }, []);
 
+  const closeMenu = () => setMenuOpen(false);
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
       <div dangerouslySetInnerHTML={{ __html: PAGE_HTML }} />
+      <button
+        id="hamburger"
+        className={`hamburger${menuOpen ? " open" : ""}`}
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={menuOpen}
+        aria-controls="mobile-menu"
+        type="button"
+        onClick={() => setMenuOpen((v) => !v)}
+      >
+        <span /><span /><span />
+      </button>
+      <div
+        id="mobile-menu"
+        className={`mobile-menu${menuOpen ? " open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Main navigation"
+        aria-hidden={!menuOpen}
+      >
+        <a href="#how" onClick={closeMenu}>How it works</a>
+        <a href="#features" onClick={closeMenu}>Features</a>
+        <a href="#who" onClick={closeMenu}>Who it's for</a>
+        <a href="https://safe4all.online" target="_blank" rel="noopener" className="nav-btn" onClick={closeMenu}>Open App ↗</a>
+      </div>
+      <div
+        id="mobile-scrim"
+        className={`mobile-scrim${menuOpen ? " open" : ""}`}
+        aria-hidden="true"
+        onClick={closeMenu}
+      />
     </>
   );
 }
