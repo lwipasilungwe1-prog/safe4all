@@ -1100,6 +1100,7 @@ function Index() {
     };
 
     const toggleMenu = () => {
+      console.log("[BEKA] toggleMenu fired");
       const isOpen = hamburger?.classList.contains("open");
       if (isOpen) closeMenu(); else openMenu();
     };
