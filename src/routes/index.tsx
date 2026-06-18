@@ -1050,7 +1050,6 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   useEffect(() => {
-    console.log("[BEKA] Index useEffect running, hamburger=", document.getElementById("hamburger"));
     const handlers: Array<{ a: HTMLAnchorElement; fn: (e: Event) => void }> = [];
     document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
       const fn = (e: Event) => {
