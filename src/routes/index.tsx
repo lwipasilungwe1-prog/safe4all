@@ -1129,16 +1129,22 @@ function Index() {
       }
     };
 
-    hamburger?.addEventListener("click", toggleMenu);
-    scrim?.addEventListener("click", closeMenu);
+    // Event delegation on document — works even if the hamburger element is replaced by HMR/re-render
+    const onDocClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      if (target.closest("#hamburger")) {
+        e.preventDefault();
+        toggleMenu();
+      } else if (target.closest("#mobile-scrim") || target.closest("#mobile-menu a")) {
+        closeMenu();
+      }
+    };
+    document.addEventListener("click", onDocClick);
     document.addEventListener("keydown", handleKeydown);
-    const mobileLinks = mobileMenu?.querySelectorAll("a") ?? [];
-    mobileLinks.forEach((a) => a.addEventListener("click", closeMenu));
     const mobileListeners = [
-      { el: hamburger, type: "click", fn: toggleMenu },
-      { el: scrim, type: "click", fn: closeMenu },
+      { el: document, type: "click", fn: onDocClick },
       { el: document, type: "keydown", fn: handleKeydown },
-      ...Array.from(mobileLinks).map((a) => ({ el: a as HTMLElement, type: "click", fn: closeMenu })),
     ] as const;
 
     // Carousel dots sync
