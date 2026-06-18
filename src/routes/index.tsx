@@ -586,19 +586,8 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <li><a href="#who">Who it's for</a></li>
   </ul>
   <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn nav-btn-desktop">Open App ↗</a>
-  <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
-<!-- MOBILE MENU -->
-<div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Main navigation" aria-hidden="true" tabindex="-1">
-  <a href="#how" tabindex="0">How it works</a>
-  <a href="#features" tabindex="0">Features</a>
-  <a href="#who" tabindex="0">Who it's for</a>
-  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn" tabindex="0">Open App ↗</a>
-</div>
-<div id="mobile-scrim" class="mobile-scrim" aria-hidden="true"></div>
 
 
 
