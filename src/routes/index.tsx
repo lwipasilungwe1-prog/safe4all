@@ -1041,6 +1041,22 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle("menu-open", menuOpen);
+    if (menuOpen) {
+      const onKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setMenuOpen(false);
+      };
+      document.addEventListener("keydown", onKey);
+      return () => {
+        document.removeEventListener("keydown", onKey);
+        document.body.classList.remove("menu-open");
+      };
+    }
+  }, [menuOpen]);
+
   useEffect(() => {
     const handlers: Array<{ a: HTMLAnchorElement; fn: (e: Event) => void }> = [];
     document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
