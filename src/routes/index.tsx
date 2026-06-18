@@ -1075,82 +1075,8 @@ function Index() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Mobile menu helpers — re-query elements each call so they survive HMR/innerHTML replacement
-    const q = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
+    const mobileListeners: ReadonlyArray<{ el: EventTarget | null; type: string; fn: EventListener }> = [];
 
-    const getFocusables = () => {
-      const m = q("mobile-menu");
-      if (!m) return [];
-      return Array.from(
-        m.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])')
-      ).filter((el) => !(el as HTMLButtonElement).disabled && el.getAttribute("aria-hidden") !== "true");
-    };
-
-    const closeMenu = () => {
-      const h = q("hamburger");
-      const m = q("mobile-menu");
-      const s = q("mobile-scrim");
-      h?.classList.remove("open");
-      m?.classList.remove("open");
-      s?.classList.remove("open");
-      h?.setAttribute("aria-expanded", "false");
-      m?.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("menu-open");
-    };
-
-    const openMenu = () => {
-      const h = q("hamburger");
-      const m = q("mobile-menu");
-      const s = q("mobile-scrim");
-      h?.classList.add("open");
-      m?.classList.add("open");
-      s?.classList.add("open");
-      h?.setAttribute("aria-expanded", "true");
-      m?.setAttribute("aria-hidden", "false");
-      document.body.classList.add("menu-open");
-      getFocusables()[0]?.focus();
-    };
-
-    const toggleMenu = () => {
-      const h = q("hamburger");
-      if (h?.classList.contains("open")) closeMenu(); else openMenu();
-    };
-
-
-
-    // Focus trap
-    const handleKeydown = (e: KeyboardEvent) => {
-      if (!q("hamburger")?.classList.contains("open")) return;
-      if (e.key === "Escape") { e.preventDefault(); closeMenu(); return; }
-      if (e.key !== "Tab") return;
-      const focusables = getFocusables();
-      if (focusables.length === 0) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-      }
-    };
-
-    // Event delegation on document — works even if the hamburger element is replaced by HMR/re-render
-    const onDocClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (!target) return;
-      if (target.closest("#hamburger")) {
-        e.preventDefault();
-        toggleMenu();
-      } else if (target.closest("#mobile-scrim") || target.closest("#mobile-menu a")) {
-        closeMenu();
-      }
-    };
-    document.addEventListener("click", onDocClick);
-    document.addEventListener("keydown", handleKeydown);
-    const mobileListeners = [
-      { el: document, type: "click", fn: onDocClick },
-      { el: document, type: "keydown", fn: handleKeydown },
-    ] as const;
 
     // Carousel dots sync
     const phonesRow = document.getElementById("phones-row") as HTMLElement | null;
