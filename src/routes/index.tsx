@@ -571,9 +571,10 @@ h1 em{background:linear-gradient(90deg,#ff5520 0%,#ffaa44 50%,#ff5520 100%);back
 .mobile-scrim.open{opacity:1;pointer-events:auto}
 body.menu-open{overflow:hidden}
 @media(max-width:768px){
-  .hamburger{display:flex}
+  .hamburger{display:flex;position:fixed;top:1.55rem;right:max(1.15rem,calc(50vw - 219px));z-index:101}
   .nav-btn-desktop{display:none}
 }
+
 
 `;
 
