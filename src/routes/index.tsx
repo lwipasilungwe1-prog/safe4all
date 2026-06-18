@@ -586,19 +586,20 @@ const PAGE_HTML = String.raw`<!-- NAV -->
     <li><a href="#who">Who it's for</a></li>
   </ul>
   <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn nav-btn-desktop">Open App ↗</a>
-  <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button" onclick="window.__bekaToggleMenu&&window.__bekaToggleMenu()">
+  <button id="hamburger" class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" type="button" onclick="var b=this,m=document.getElementById('mobile-menu'),s=document.getElementById('mobile-scrim'),open=!b.classList.contains('open');b.classList.toggle('open',open);if(m)m.classList.toggle('open',open);if(s)s.classList.toggle('open',open);b.setAttribute('aria-expanded',open?'true':'false');if(m)m.setAttribute('aria-hidden',open?'false':'true');document.body.classList.toggle('menu-open',open);">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
 <!-- MOBILE MENU -->
 <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Main navigation" aria-hidden="true" tabindex="-1">
-  <a href="#how" tabindex="0" onclick="window.__bekaCloseMenu&&window.__bekaCloseMenu()">How it works</a>
-  <a href="#features" tabindex="0" onclick="window.__bekaCloseMenu&&window.__bekaCloseMenu()">Features</a>
-  <a href="#who" tabindex="0" onclick="window.__bekaCloseMenu&&window.__bekaCloseMenu()">Who it's for</a>
-  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn" tabindex="0" onclick="window.__bekaCloseMenu&&window.__bekaCloseMenu()">Open App ↗</a>
+  <a href="#how" tabindex="0" onclick="document.getElementById('hamburger').click()">How it works</a>
+  <a href="#features" tabindex="0" onclick="document.getElementById('hamburger').click()">Features</a>
+  <a href="#who" tabindex="0" onclick="document.getElementById('hamburger').click()">Who it's for</a>
+  <a href="https://safe4all.online" target="_blank" rel="noopener" class="nav-btn" tabindex="0" onclick="document.getElementById('hamburger').click()">Open App ↗</a>
 </div>
-<div id="mobile-scrim" class="mobile-scrim" aria-hidden="true" onclick="window.__bekaCloseMenu&&window.__bekaCloseMenu()"></div>
+<div id="mobile-scrim" class="mobile-scrim" aria-hidden="true" onclick="document.getElementById('hamburger').click()"></div>
+
 
 
 
