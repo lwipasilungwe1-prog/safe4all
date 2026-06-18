@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const PAGE_CSS = String.raw`
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
