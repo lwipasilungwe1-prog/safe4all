@@ -1121,10 +1121,41 @@ function Index() {
     };
   }, []);
 
+  const closeMenu = () => setMenuOpen(false);
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: PAGE_CSS }} />
       <div dangerouslySetInnerHTML={{ __html: PAGE_HTML }} />
+      <button
+        id="hamburger"
+        className={`hamburger${menuOpen ? " open" : ""}`}
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={menuOpen}
+        aria-controls="mobile-menu"
+        type="button"
+        onClick={() => setMenuOpen((v) => !v)}
+      >
+        <span /><span /><span />
+      </button>
+      <div
+        id="mobile-menu"
+        className={`mobile-menu${menuOpen ? " open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Main navigation"
+        aria-hidden={!menuOpen}
+      >
+        <a href="#how" onClick={closeMenu}>How it works</a>
+        <a href="#features" onClick={closeMenu}>Features</a>
+        <a href="#who" onClick={closeMenu}>Who it's for</a>
+        <a href="https://safe4all.online" target="_blank" rel="noopener" className="nav-btn" onClick={closeMenu}>Open App ↗</a>
+      </div>
+      <div
+        id="mobile-scrim"
+        className={`mobile-scrim${menuOpen ? " open" : ""}`}
+        aria-hidden="true"
+        onClick={closeMenu}
+      />
     </>
   );
 }
