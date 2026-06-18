@@ -1069,49 +1069,48 @@ function Index() {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    // Mobile menu toggle
-    const hamburger = document.getElementById("hamburger") as HTMLButtonElement | null;
-    const mobileMenu = document.getElementById("mobile-menu") as HTMLElement | null;
-    const scrim = document.getElementById("mobile-scrim") as HTMLElement | null;
+    // Mobile menu helpers — re-query elements each call so they survive HMR/innerHTML replacement
+    const q = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
 
     const getFocusables = () => {
-      if (!mobileMenu) return [];
+      const m = q("mobile-menu");
+      if (!m) return [];
       return Array.from(
-        mobileMenu.querySelectorAll<HTMLElement>(
-          'a[href], button, [tabindex]:not([tabindex="-1"])'
-        )
+        m.querySelectorAll<HTMLElement>('a[href], button, [tabindex]:not([tabindex="-1"])')
       ).filter((el) => !(el as HTMLButtonElement).disabled && el.getAttribute("aria-hidden") !== "true");
     };
 
     const closeMenu = () => {
-      hamburger?.classList.remove("open");
-      mobileMenu?.classList.remove("open");
-      scrim?.classList.remove("open");
-      hamburger?.setAttribute("aria-expanded", "false");
-      mobileMenu?.setAttribute("aria-hidden", "true");
+      const h = q("hamburger");
+      const m = q("mobile-menu");
+      const s = q("mobile-scrim");
+      h?.classList.remove("open");
+      m?.classList.remove("open");
+      s?.classList.remove("open");
+      h?.setAttribute("aria-expanded", "false");
+      m?.setAttribute("aria-hidden", "true");
       document.body.classList.remove("menu-open");
-      hamburger?.focus();
     };
 
     const openMenu = () => {
-      hamburger?.classList.add("open");
-      mobileMenu?.classList.add("open");
-      scrim?.classList.add("open");
-      hamburger?.setAttribute("aria-expanded", "true");
-      mobileMenu?.setAttribute("aria-hidden", "false");
+      const h = q("hamburger");
+      const m = q("mobile-menu");
+      const s = q("mobile-scrim");
+      h?.classList.add("open");
+      m?.classList.add("open");
+      s?.classList.add("open");
+      h?.setAttribute("aria-expanded", "true");
+      m?.setAttribute("aria-hidden", "false");
       document.body.classList.add("menu-open");
-      const focusables = getFocusables();
-      focusables[0]?.focus();
+      getFocusables()[0]?.focus();
     };
 
     const toggleMenu = () => {
-      const isOpen = hamburger?.classList.contains("open");
-      if (isOpen) closeMenu(); else openMenu();
+      const h = q("hamburger");
+      if (h?.classList.contains("open")) closeMenu(); else openMenu();
     };
 
-    // Expose globally so inline onclick handlers in dangerouslySetInnerHTML can call them
-    (window as any).__bekaToggleMenu = toggleMenu;
-    (window as any).__bekaCloseMenu = closeMenu;
+
 
     // Focus trap
     const handleKeydown = (e: KeyboardEvent) => {
