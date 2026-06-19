@@ -774,21 +774,21 @@ const PAGE_HTML = String.raw`<!-- NAV -->
       <div class="card c-green">
         <div class="icon-box"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
         <div class="card-t">Evidence vault</div>
-        <div class="card-d">Securely upload photos, audio, documents, and ZP Form 32s. Every file is time-stamped and tamper-evident for legal proceedings.</div>
+        <div class="card-d">Securely upload photos, audio, documents, ZP Form 32s, and other files. Every upload is time-stamped and tamper-evident for legal proceedings.</div>
         <span class="tag tag-green">Legal</span>
       </div>
 
       <div class="card c-green">
         <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
         <div class="card-t">Statement builder</div>
-        <div class="card-d">Build a structured incident statement covering who, what, when, where, and injuries. Export as PDF with police reference numbers.</div>
+        <div class="card-d">Build a structured incident statement step by step — incident details, location, evidence, and reporter info. Export as a PDF with police reference numbers.</div>
         <span class="tag tag-green">Legal</span>
       </div>
 
       <div class="card c-blue">
         <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <div class="card-t">Response unit directory</div>
-        <div class="card-d">Police, hospitals, shelters, VSUs, OSCs, and legal aid across all 10 Zambian provinces — with on-call status and contacts.</div>
+        <div class="card-d">Police, hospitals, shelters, NGOs, social services, VSUs, OSCs, and legal aid across all 10 Zambian provinces — with on-call status and contacts.</div>
         <span class="tag tag-blue">Coordination</span>
       </div>
 
@@ -802,7 +802,7 @@ const PAGE_HTML = String.raw`<!-- NAV -->
       <div class="card c-red">
         <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         <div class="card-t">Emergency contacts</div>
-        <div class="card-d">Save up to seven priority contacts. Each receives an SMS the moment a panic alert is triggered.</div>
+        <div class="card-d">Save up to five priority contacts. Each receives an SMS the moment a panic alert is triggered.</div>
         <span class="tag tag-red">Safety</span>
       </div>
 
@@ -840,7 +840,7 @@ const PAGE_HTML = String.raw`<!-- NAV -->
           <li>Live location to trusted contacts</li>
           <li>Anonymous incident reporting</li>
           <li>Evidence vault &amp; statement builder</li>
-          <li>Find shelters, VSUs &amp; legal aid</li>
+          <li>Find shelters, NGOs, VSUs &amp; legal aid</li>
         </ul>
       </div>
 
