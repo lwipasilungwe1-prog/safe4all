@@ -1029,6 +1029,8 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Secure, multilingual GBV emergency response across Zambia." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
+      { property: "og:image", content: "https://safe4all.online/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" },
+      { name: "twitter:image", content: "https://safe4all.online/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" },
     ],
     links: [
       { rel: "canonical", href: "/" },
