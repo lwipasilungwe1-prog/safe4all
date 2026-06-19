@@ -607,9 +607,9 @@ const PAGE_HTML = String.raw`<!-- NAV -->
 
   <!-- HERO VISUAL — real app screenshots -->
   <div class="phones-row" id="phones-row">
-    <div class="phone-shot"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="eager"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/4e3267b2-469b-4b74-a0d2-3223b4c14744/app-contacts-empty.jpg" alt="BEKA app — trusted contacts list screen" loading="eager"/></div>
     <div class="phone-shot mid"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="eager"/></div>
-    <div class="phone-shot"><img src="/__l5e/assets-v1/c4c30970-3af0-44ed-9d92-26c90a759b12/app-help.jpg" alt="BEKA app — press to get help panic button screen" loading="lazy"/></div>
+    <div class="phone-shot"><img src="/__l5e/assets-v1/14d16e1e-8d68-4df8-8f39-436acd455a45/app-settings.jpg" alt="BEKA app — settings screen" loading="lazy"/></div>
   </div>
   <div class="carousel-dots" id="carousel-dots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
 
